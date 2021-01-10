@@ -106,10 +106,10 @@ export default class WelcomeScreen extends Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        // androidClientId: config2.expoClientAndroidGoogleSignIn,
+        androidClientId: apiKeys.expoClientAndroidGoogleSignIn,
         iosClientId: apiKeys.expoClientIosGoogleSignIn,
-        // androidStandaloneAppClientId: config2.androidGoogle,
-        // iosStandaloneAppClientId: config2.iOSGoogle,
+        androidStandaloneAppClientId: apiKeys.androidGoogle,
+        iosStandaloneAppClientId: apiKeys.iOSGoogle,
         //behavior: "web",
         scopes: ["profile", "email"],
       });
