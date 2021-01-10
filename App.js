@@ -1,21 +1,11 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
+import EachItem from "./components/listscreen_components/EachItem";
+import MainRoute from "./routes/MainRoute";
+import ListScreen from "./screens/ListScreen";
+import LoadingScreen from "./screens/LoadingScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open u</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <MainRoute />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
