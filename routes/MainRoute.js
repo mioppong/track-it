@@ -54,7 +54,7 @@ function MainRoute() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="WelcomeScreen"
+          name="Welcome"
           component={WelcomeScreen}
           options={{ headerShown: false }}
         />
