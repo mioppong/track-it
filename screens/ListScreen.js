@@ -11,6 +11,7 @@ import {
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
+import firebase from "firebase";
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
@@ -104,9 +105,7 @@ export default class ListScreen extends Component {
       {
         color: "blue",
         content: <Text>+</Text>,
-        action: () => {
-          alert("You clicked!");
-        },
+        action: () => firebase.auth().signOut(),
       },
       {
         color: colors.primary,

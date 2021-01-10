@@ -5,6 +5,7 @@ import Screen from "../components/Screen";
 import colors from "../config/colors";
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
+import { apiKeys } from "../config2";
 
 export default class WelcomeScreen extends Component {
   constructor(props) {
@@ -105,10 +106,10 @@ export default class WelcomeScreen extends Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId: config2.expoClientAndroidGoogleSignIn,
-        iosClientId: config2.expoClientIosGoogleSignIn,
-        androidStandaloneAppClientId: config2.androidGoogle,
-        iosStandaloneAppClientId: config2.iOSGoogle,
+        // androidClientId: config2.expoClientAndroidGoogleSignIn,
+        iosClientId: apiKeys.expoClientIosGoogleSignIn,
+        // androidStandaloneAppClientId: config2.androidGoogle,
+        // iosStandaloneAppClientId: config2.iOSGoogle,
         //behavior: "web",
         scopes: ["profile", "email"],
       });
@@ -129,7 +130,7 @@ export default class WelcomeScreen extends Component {
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
           <Text> Tracker </Text>
-          <AppButton onPress={this.handleLogin} />
+          <AppButton onPress={this.signInWithGoogleAsync} />
         </View>
       </Screen>
     );
