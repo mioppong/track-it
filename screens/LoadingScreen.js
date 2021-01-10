@@ -2,7 +2,12 @@ import React, { Component } from "react";
 import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { Plane } from "react-native-animated-spinkit";
 import colors from "../config/colors";
+import firebase from "firebase";
+import { firebaseConfig } from "../config";
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 export default class LoadingScreen extends Component {
   constructor(props) {
     super(props);
@@ -10,21 +15,21 @@ export default class LoadingScreen extends Component {
 
   checkIfLoggedIn = () => {
     //THIS FUNCTION IS CALLED, WHEN USER OPEN APP, IF LOGGED IN, GO TO FEED SCREEN
-    //WE ALSO RESET INDEX, SO USER CANT GO BACK AFTER LOGGING IN
-    // firebase.auth().onAuthStateChanged((user) => {
-    //   if (user) {
-    //     //user logged in
-    //     this.props.navigation.reset({
-    //       index: 0,
-    //       routes: [{ name: "myTabs" }],
-    //     });
-    //   } else {
-    //     this.props.navigation.reset({
-    //       index: 0,
-    //       routes: [{ name: "Welcome" }],
-    //     });
-    //   }
-    // });
+    // //WE ALSO RESET INDEX, SO USER CANT GO BACK AFTER LOGGING IN
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        //user logged in
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{ name: "Tabs" }],
+        });
+      } else {
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{ name: "Welcome" }],
+        });
+      }
+    });
   };
 
   //function called right when you open app
