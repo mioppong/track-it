@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   container: {
-    backgroundColor: "red",
+    backgroundColor: colors.eights,
     flex: 1,
   },
   listStyles: {

@@ -5,43 +5,53 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoadingScreen from "../screens/LoadingScreen";
+import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import ListScreen from "../screens/ListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import colors from "../config/colors";
+import Icon from "../components/Icon";
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = AnimatedTabBarNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator
-      shifting
-      sceneAnimationEnabled={true}
-      activeColor={colors.darkGray}
-      barStyle={{
-        backgroundColor: colors.fifth,
-        borderTopWidth: 1,
-        borderColor: colors.white,
+      appearence={{
+        floating: true,
+        whenActiveShow: "both",
+        whenInactive: "icon-only",
+        activeTintColor: colors.mediumGray,
+        inactiveTintColor: colors.darkGray,
+      }}
+      tabBarOptions={{
+        activeBackgroundColor: colors.seventh,
       }}
     >
       <Tab.Screen
         name="Home"
         component={ListScreen}
-        options={{ headerShown: false }}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Icon name="format-list-bulleted" iconColor={colors.primary} />
+          ),
+        }}
       />
-      <Tab.Screen name="profile" component={ProfileScreen} />
+
+      <Tab.Screen
+        name="profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Icon name="face-profile" iconColor={colors.primary} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
-// function HomeScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
 
 const Stack = createStackNavigator();
 function MainRoute() {
