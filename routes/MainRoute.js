@@ -5,31 +5,43 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoadingScreen from "../screens/LoadingScreen";
-
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import ListScreen from "../screens/ListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import colors from "../config/colors";
+import Icon from "../components/Icon";
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator
-      shifting
-      sceneAnimationEnabled={true}
-      activeColor={colors.darkGray}
-      barStyle={{
-        backgroundColor: colors.fifth,
-        borderTopWidth: 1,
-        borderColor: colors.white,
+      tabBarOptions={{
+        activeBackgroundColor: colors.primary,
+        style: {
+          padding: 20,
+          backgroundColor: colors.white,
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          elevation: 0,
+          borderRadius: 120,
+          marginBottom: 25,
+        },
       }}
     >
       <Tab.Screen
         name="Home"
         component={ListScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          tabBarLabel: "",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="account" color={color} size={60} />
+          ),
+        }}
       />
       <Tab.Screen name="profile" component={ProfileScreen} />
     </Tab.Navigator>
