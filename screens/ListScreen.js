@@ -19,9 +19,10 @@ export default class ListScreen extends Component {
       items: [
         {
           key: "1",
-          title: "title first",
-          image: "google.com image",
-          description: "my cool description",
+          title: "Toyota camry white",
+          image: "license place: AVTS, drivers: michael oppong, 4167384674",
+          description:
+            "license place: AVTS, drivers: michael oppong, 4167384674",
         },
         {
           key: "2",
@@ -128,12 +129,15 @@ export default class ListScreen extends Component {
           <TextInput style={styles.textInput} />
         </View>
         <Text>ayee</Text>
-        <FlatList
-          key={(item) => item.key.toString()}
-          style={styles.listStyles}
-          data={this.state.items}
-          renderItem={(item) => <EachItem data={item.item} />}
-        />
+        <View style={styles.listContainer}>
+          <FlatList
+            contentContainerStyle={{ paddingBottom: 20 }}
+            key={(item) => item.key.toString()}
+            style={styles.listStyles}
+            data={this.state.items}
+            renderItem={(item) => <EachItem data={item.item} />}
+          />
+        </View>
 
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
@@ -171,8 +175,16 @@ const styles = StyleSheet.create({
   listStyles: {
     flex: 0.8,
     margin: 10,
-    padding: 10,
-    backgroundColor: "green",
+    paddingBottom: "10%",
+    padding: "4%",
+
+    // backgroundColor: "gray",
+  },
+  listContainer: {
+    flex: 1,
+    marginBottom: "20%",
+    // paddingVertical: "4%",
+    // backgroundColor: "green",
   },
   addItemButtomStyles: {
     position: "absolute",

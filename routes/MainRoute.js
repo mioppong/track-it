@@ -41,7 +41,7 @@ function MyTabs() {
       />
 
       <Tab.Screen
-        name="profile"
+        name="Profile"
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
