@@ -12,6 +12,7 @@ import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
 import firebase from "firebase";
+import { LinearGradient } from "expo-linear-gradient";
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
@@ -19,16 +20,18 @@ export default class ListScreen extends Component {
       items: [
         {
           key: "1",
-          title: "title first",
-          image: "google.com image",
-          description: "my cool description",
+          title: "1111111111/1111111111/1111111111/",
+          image: "license place: AVTS",
+          description:
+            "hello my name is michael opponghellis michael opponghello my name is michael opponghello my name is michael opponghello my name is michael opponghello my name is michael oppong google",
         },
         {
           key: "2",
 
-          title: "title second",
+          title: "toyota caravan brown",
           image: "google.second image",
-          description: "my cool description",
+          description:
+            "license plate, 45hh4, driver 1: ama dokado, phone # is 416748654 and second driver",
         },
         {
           key: "3",
@@ -128,12 +131,15 @@ export default class ListScreen extends Component {
           <TextInput style={styles.textInput} />
         </View>
         <Text>ayee</Text>
-        <FlatList
-          key={(item) => item.key.toString()}
-          style={styles.listStyles}
-          data={this.state.items}
-          renderItem={(item) => <EachItem data={item.item} />}
-        />
+        <View style={styles.listContainer}>
+          <FlatList
+            contentContainerStyle={{ paddingBottom: 20 }}
+            key={(item) => item.key.toString()}
+            style={styles.listStyles}
+            data={this.state.items}
+            renderItem={(item) => <EachItem data={item.item} />}
+          />
+        </View>
 
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
@@ -171,8 +177,16 @@ const styles = StyleSheet.create({
   listStyles: {
     flex: 0.8,
     margin: 10,
-    padding: 10,
-    backgroundColor: "green",
+    paddingBottom: "10%",
+    padding: "4%",
+
+    // backgroundColor: "gray",
+  },
+  listContainer: {
+    flex: 1,
+    marginBottom: "20%",
+    // paddingVertical: "4%",
+    // backgroundColor: "green",
   },
   addItemButtomStyles: {
     position: "absolute",
