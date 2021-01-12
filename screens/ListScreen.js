@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import { AnimatedAbsoluteButton } from "react-native-animated-absolute-buttons";
-import {
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  Button,
-  TextInput,
-} from "react-native";
+import { Text, StyleSheet, View, FlatList, TextInput } from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
 import firebase from "firebase";
-import { LinearGradient } from "expo-linear-gradient";
+import AppButton from "../components/AppButton";
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
@@ -128,9 +121,14 @@ export default class ListScreen extends Component {
     return (
       <Screen style={styles.container}>
         <View style={styles.searchContainer}>
-          <TextInput style={styles.textInput} />
+          <TextInput
+            placeholder="What Item DO you want to search for crodie?"
+            style={styles.textInput}
+          />
+
+          <AppButton style={styles.searchButtonStyle} iconName="search" />
         </View>
-        <Text>ayee</Text>
+
         <View style={styles.listContainer}>
           <FlatList
             contentContainerStyle={{ paddingBottom: 20 }}
@@ -188,6 +186,7 @@ const styles = StyleSheet.create({
     // paddingVertical: "4%",
     // backgroundColor: "green",
   },
+  searchButtonStyle: { marginHorizontal: 10, marginTop: 0 },
   addItemButtomStyles: {
     position: "absolute",
     left: 0,
@@ -197,12 +196,18 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     width: "100%",
-    height: 40,
-    backgroundColor: colors.primary,
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    // backgroundColor: "red",
+    padding: 20,
   },
   textInput: {
-    width: "60%",
+    width: "85%",
+    borderRadius: 20,
     height: 40,
-    backgroundColor: colors.mediumGray,
+    backgroundColor: colors.lightGray,
+    padding: "1%",
   },
 });
