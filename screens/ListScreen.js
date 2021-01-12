@@ -12,6 +12,7 @@ import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
 import firebase from "firebase";
+import { LinearGradient } from "expo-linear-gradient";
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
@@ -19,17 +20,18 @@ export default class ListScreen extends Component {
       items: [
         {
           key: "1",
-          title: "Toyota camry white",
-          image: "license place: AVTS, drivers: michael oppong, 4167384674",
+          title: "1111111111/1111111111/1111111111/",
+          image: "license place: AVTS",
           description:
-            "license place: AVTS, drivers: michael oppong, 4167384674",
+            "hello my name is michael opponghellis michael opponghello my name is michael opponghello my name is michael opponghello my name is michael opponghello my name is michael oppong google",
         },
         {
           key: "2",
 
-          title: "title second",
+          title: "toyota caravan brown",
           image: "google.second image",
-          description: "my cool description",
+          description:
+            "license plate, 45hh4, driver 1: ama dokado, phone # is 416748654 and second driver",
         },
         {
           key: "3",

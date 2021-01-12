@@ -8,18 +8,37 @@ export default function EachItem({ data }) {
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
         <Image
-          style={{ width: 200, height: 200, borderRadius: 60 }}
+          style={{
+            width: 260,
+            height: 200,
+            borderRadius: 20,
+            flex: 1,
+            margin: "2%",
+          }}
           source={{
             uri:
-              "https://media.tenor.com/images/973e3481caf3d8d6e48ebf18e9ca725f/tenor.gif",
+              "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
           }}
         />
         <View
           style={{
-            backgroundColor: "red",
-            height: "100%",
-            padding: "2%",
+            margin: "2%",
+            flex: 0.5,
+            backgroundColor: colors.fifth,
+            height: 201,
+            width: "35%",
+            padding: "5%",
             borderRadius: 50,
+
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 6,
+            },
+            shadowOpacity: 0.37,
+            shadowRadius: 7.49,
+
+            elevation: 12,
           }}
         >
           <Text style={styles.descriptionStyle}>{data.description}</Text>
@@ -34,9 +53,9 @@ export default function EachItem({ data }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: "5%",
+    padding: "0.5%",
     width: "100%",
-    backgroundColor: colors.fourth,
+    backgroundColor: colors.seventh,
     marginVertical: "5%",
     borderRadius: 25,
     shadowColor: "#000",
@@ -50,16 +69,31 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   descriptionStyle: {
+    padding: "1%",
     margin: "1%",
+    fontWeight: "bold",
+
+    // backgroundColor: "green",
+
+    flexShrink: 1,
   },
   titleContainer: {
     marginVertical: "1%",
     // backgroundColor: "red",
     height: 40,
     width: "100%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
   },
   titleStyle: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: "left",
     fontWeight: "bold",
   },
