@@ -6,6 +6,8 @@ import colors from "../config/colors";
 import Screen from "../components/Screen";
 import firebase from "firebase";
 import AppButton from "../components/AppButton";
+import Animated from "react-native-reanimated";
+
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
@@ -97,6 +99,12 @@ export default class ListScreen extends Component {
   }
 
   render() {
+    const scrollY = new Animated.Value(0);
+    const diffClamp = Animated.diffClamp(scrollY, 0, 120);
+    const translateY = Animated.interpolate(diffClamp, {
+      inputRange: [0, 120],
+      outputRange: [0, -120],
+    });
     const buttons = [
       {
         color: "blue",
@@ -118,23 +126,44 @@ export default class ListScreen extends Component {
         },
       },
     ];
+    // styles.searchContainer,
     return (
       <Screen style={styles.container}>
-        <View style={styles.searchContainer}>
+        <Animated.View
+          style={{
+            top: 0,
+            left: 0,
+            position: "absolute",
+            width: "100%",
+            height: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            // backgroundColor: "red",
+            padding: 20,
+            transform: [{ translateY }],
+            zIndex: 1,
+          }}
+        >
           <TextInput
             placeholder="What Item DO you want to search for crodie?"
             style={styles.textInput}
           />
 
           <AppButton style={styles.searchButtonStyle} iconName="search" />
-        </View>
+        </Animated.View>
 
         <View style={styles.listContainer}>
           <FlatList
+            alwaysBounceVertical={false}
+            bounces={false}
             contentContainerStyle={{ paddingBottom: 20 }}
             key={(item) => item.key.toString()}
             style={styles.listStyles}
             data={this.state.items}
+            onScroll={(e) => {
+              scrollY.setValue(e.nativeEvent.contentOffset.y);
+            }}
             renderItem={(item) => <EachItem data={item.item} />}
           />
         </View>
@@ -173,7 +202,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listStyles: {
-    flex: 0.8,
+    flex: 1,
     margin: 10,
     paddingBottom: "10%",
     padding: "4%",
@@ -182,7 +211,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    marginBottom: "20%",
+    // marginBottom: "20%",
     // paddingVertical: "4%",
     // backgroundColor: "green",
   },
