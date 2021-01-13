@@ -1,13 +1,22 @@
 import React, { Component } from "react";
 import { AnimatedAbsoluteButton } from "react-native-animated-absolute-buttons";
-import { Text, StyleSheet, View, FlatList, TextInput } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  FlatList,
+  TextInput,
+  Image,
+} from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
 import firebase from "firebase";
 import AppButton from "../components/AppButton";
 import Animated from "react-native-reanimated";
-
+import Icon from "../components/Icon";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
@@ -107,20 +116,14 @@ export default class ListScreen extends Component {
     });
     const buttons = [
       {
-        color: "blue",
-        content: <Text>+</Text>,
+        color: colors.lightGray,
+        content: <Ionicons name="ios-add" size={40} color={colors.primary} />,
         action: () => firebase.auth().signOut(),
       },
+
       {
-        color: colors.primary,
-        content: <Text>🤙</Text>,
-        action: () => {
-          alert("You clicked!");
-        },
-      },
-      {
-        color: "green",
-        content: <Text>👋</Text>,
+        color: colors.white,
+        content: <AntDesign name="logout" size={24} color={colors.primary} />,
         action: () => {
           alert("You clicked!");
         },
@@ -153,6 +156,18 @@ export default class ListScreen extends Component {
           <AppButton style={styles.searchButtonStyle} iconName="search" />
         </Animated.View>
 
+        <Image
+          source={require("../assets/magnifying-glass.png")}
+          style={{
+            height: 40,
+            width: 40,
+            // backgroundColor: "red",
+            position: "absolute",
+            top: 0,
+            left: "42%",
+          }}
+        />
+
         <View style={styles.listContainer}>
           <FlatList
             alwaysBounceVertical={false}
@@ -173,11 +188,19 @@ export default class ListScreen extends Component {
             buttonSize={50}
             buttonColor="indigo"
             buttonShape="circular"
-            buttonContent={<Text>👍</Text>}
+            buttonContent={
+              <Image
+                source={require("../assets/magnifying-glass.png")}
+                style={{
+                  height: 60,
+                  width: 60,
+                }}
+              />
+            }
             direction="top"
             position="bottom-right"
-            positionVerticalMargin={10}
-            positionHorizontalMargin={10}
+            positionVerticalMargin={15}
+            positionHorizontalMargin={15}
             time={500}
             easing="bounce"
             buttons={buttons}
@@ -193,8 +216,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
 
-    top: "85%",
-    left: "85%",
+    top: "80%",
+    left: "90%",
     position: "absolute",
   },
   container: {
@@ -210,18 +233,17 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray",
   },
   listContainer: {
+    marginTop: "10%",
     flex: 1,
-    // marginBottom: "20%",
+    // height: "100%",
+    marginBottom: "18%",
     // paddingVertical: "4%",
     // backgroundColor: "green",
   },
   searchButtonStyle: { marginHorizontal: 10, marginTop: 0 },
   addItemButtomStyles: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    bottom: 0,
-    right: 0,
+    fontSize: 40,
+    fontWeight: "bold",
   },
   searchContainer: {
     width: "100%",
