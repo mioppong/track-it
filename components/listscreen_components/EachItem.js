@@ -28,7 +28,7 @@ export default function EachItem({ data }) {
             height: 201,
             width: "35%",
             padding: "5%",
-            borderRadius: 50,
+            borderRadius: 20,
 
             shadowColor: "#000",
             shadowOffset: {
