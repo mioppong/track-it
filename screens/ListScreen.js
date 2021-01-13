@@ -153,7 +153,10 @@ export default class ListScreen extends Component {
             style={styles.textInput}
           />
 
-          <AppButton style={styles.searchButtonStyle} iconName="search" />
+          <AppButton
+            style={styles.searchButtonStyle}
+            iconName="cloud-search-outline"
+          />
         </Animated.View>
 
         <Image
