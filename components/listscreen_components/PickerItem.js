@@ -35,6 +35,7 @@ export default function PickerItem(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "rgba(1,1,1,0.5);",
   },
   inisdeContainer: {
     alignItems: "center",
