@@ -7,6 +7,9 @@ import * as ImagePicker from "expo-image-picker";
 // THIS FUNCTION IS PASSED 2 ITEMS THEY CAN CHOOSE FROM, MENU
 export default function PickerItem(props) {
   const [image, setImage] = useState(null);
+  const passImageToEdit = (imgUri) => {
+    props.setImage(imgUri);
+  };
 
   useEffect(() => {
     (async () => {
@@ -33,6 +36,7 @@ export default function PickerItem(props) {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      passImageToEdit(result.uri);
     }
   };
   return (
@@ -44,12 +48,6 @@ export default function PickerItem(props) {
             iconSize={80}
             style={styles.buttonStyle}
           />
-          {image && (
-            <Image
-              source={{ uri: image }}
-              style={{ width: 200, height: 200 }}
-            />
-          )}
 
           <AppButton
             iconName="camera-burst"

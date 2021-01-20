@@ -1,12 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import {
-  Image,
   ImageBackground,
   Modal,
   StyleSheet,
   Text,
-  KeyboardAvoidingView,
   TextInput,
   View,
 } from "react-native";
@@ -19,6 +17,10 @@ import PickerItem from "./PickerItem";
 
 export default function EditItemModal({ visible, data, onPress }) {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
+  const [image, setImage] = useState(data.image);
+  const [title, setTitle] = useState(data.title);
+  const [description, setDescription] = useState(data.description);
+
   const handleChangeImage = () => {};
   return (
     <Modal
@@ -59,14 +61,14 @@ export default function EditItemModal({ visible, data, onPress }) {
           </View>
           <View style={styles.imageContainer}>
             <ImageBackground
-              source={{ uri: data.image }}
+              source={{ uri: image }}
               imageStyle={styles.image}
               style={styles.image}
             >
               <TouchableWithoutFeedback
                 onPress={() => setCameraModalVisible(true)}
               >
-                <Icon name="camera" size={100} iconColor={colors.primary} />
+                <Icon name="camera" size={300} iconColor={colors.primary} />
               </TouchableWithoutFeedback>
             </ImageBackground>
           </View>
@@ -83,7 +85,7 @@ export default function EditItemModal({ visible, data, onPress }) {
             >
               Title:
             </Text>
-            <TextInput style={styles.titleInput} />
+            <TextInput value={title} style={styles.titleInput} />
             <Text
               style={{
                 fontWeight: "bold",
@@ -97,6 +99,7 @@ export default function EditItemModal({ visible, data, onPress }) {
               Description:
             </Text>
             <TextInput
+              value={description}
               numberOfLines={4}
               multiline={true}
               style={styles.descriptionInput}
@@ -107,6 +110,10 @@ export default function EditItemModal({ visible, data, onPress }) {
         <PickerItem
           visible={cameraModalVisible}
           closeCameraModal={() => setCameraModalVisible(false)}
+          setImage={(img) => {
+            console.log("THE IMG IS", img);
+            setImage(img);
+          }}
         />
       </View>
     </Modal>
