@@ -17,6 +17,7 @@ import PickerItem from "./PickerItem";
 
 export default function EditItemModal({ visible, data, onPress }) {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
+  const [actualCameraVisible, setActualCameraVisible] = useState(false);
   const [image, setImage] = useState(data.image);
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
@@ -114,6 +115,8 @@ export default function EditItemModal({ visible, data, onPress }) {
             console.log("THE IMG IS", img);
             setImage(img);
           }}
+          actualCameraVisible
+          closeActualCamera={() => setActualCameraVisible(false)}
         />
       </View>
     </Modal>
