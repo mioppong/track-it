@@ -17,8 +17,10 @@ export default function PickerItem(props) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [image, setImage] = useState(null);
+  const [actualCameraVisible, setActualCameraVisible] = useState(false);
+
   let camera;
-  const passImageToEdit = (imgUri) => {
+  const passImageToEditScreen = (imgUri) => {
     props.setImage(imgUri);
   };
 
@@ -49,16 +51,23 @@ export default function PickerItem(props) {
 
     if (!result.cancelled) {
       // setImage(result.uri);
-      passImageToEdit(result.uri);
+      passImageToEditScreen(result.uri);
     }
+  };
+  const showCamera = () => {
+    setActualCameraVisible(true);
   };
 
   const snap = async () => {
     if (camera) {
       const result = await camera.takePictureAsync();
-      passImageToEdit(result.uri);
+      passImageToEditScreen(result.uri);
     }
+
+    setActualCameraVisible(false);
+    props.closeCameraModal();
   };
+  console.log("actual camera is visible", actualCameraVisible);
   return (
     <>
       <Modal animationType="fade" transparent visible={props.visible}>
@@ -68,6 +77,10 @@ export default function PickerItem(props) {
               iconName="camera"
               iconSize={80}
               style={styles.buttonStyle}
+              onPress={() => {
+                console.log("SHOW CAMERA");
+                showCamera();
+              }}
             />
 
             <AppButton
@@ -85,48 +98,51 @@ export default function PickerItem(props) {
             />
           </View>
         </View>
-      </Modal>
 
-      <Modal animationType="slide" visible={props.actualCameraVisible}>
-        <Camera
-          ref={(ref) => {
-            camera = ref;
-          }}
-          style={styles.camera}
-          type={type}
+        <Modal
+          animationType="slide"
+          visible={actualCameraVisible && props.visible}
         >
-          <View style={styles.buttonContainer}>
-            <AppButton
-              style={styles.buttonStyle}
-              iconName="camera-retake"
-              iconSize={60}
-              onPress={() => {
-                setType(
-                  type === Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
-                );
-              }}
-            />
-            <AppButton
-              style={styles.buttonStyle}
-              iconName="camera"
-              iconSize={60}
-              onPress={() => snap()}
-            />
+          <Camera
+            ref={(ref) => {
+              camera = ref;
+            }}
+            style={styles.camera}
+            type={type}
+          >
+            <View style={styles.buttonContainer}>
+              <AppButton
+                style={styles.buttonStyle}
+                iconName="camera-retake"
+                iconSize={60}
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+              />
+              <AppButton
+                style={styles.buttonStyle}
+                iconName="camera"
+                iconSize={60}
+                onPress={() => snap()}
+              />
 
-            <AppButton
-              style={styles.buttonStyle}
-              iconName="close"
-              iconColor="red"
-              iconSize={75}
-              onPress={() => {
-                console.log("trying croo");
-                props.closeActualCamera();
-              }}
-            />
-          </View>
-        </Camera>
+              <AppButton
+                style={styles.buttonStyle}
+                iconName="close"
+                iconColor="red"
+                iconSize={75}
+                onPress={() => {
+                  console.log("trying croo");
+                  setActualCameraVisible(false);
+                }}
+              />
+            </View>
+          </Camera>
+        </Modal>
       </Modal>
     </>
   );
@@ -136,7 +152,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     height: "40%",
     width: "50%",
-    backgroundColor: "red",
+    // backgroundColor: "red",
     alignSelf: "flex-end",
     justifyContent: "space-around",
     alignItems: "flex-end",
@@ -144,6 +160,7 @@ const styles = StyleSheet.create({
   },
   cameraModalContainer: {
     flex: 1,
+    // backgroundColor: "red",
     backgroundColor: "rgba(1,1,1,0.5);",
   },
   camera: {

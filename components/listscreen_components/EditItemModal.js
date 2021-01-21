@@ -6,15 +6,14 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import colors from "../../config/colors";
 import AppButton from "../AppButton";
 import Icon from "../Icon";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import PickerItem from "./PickerItem";
-
 export default function EditItemModal({ visible, data, onPress }) {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [actualCameraVisible, setActualCameraVisible] = useState(false);
@@ -23,6 +22,11 @@ export default function EditItemModal({ visible, data, onPress }) {
   const [description, setDescription] = useState(data.description);
 
   const handleChangeImage = () => {};
+
+  const showCamera = () => {
+    setActualCameraVisible(!actualCameraVisible);
+    console.log("trying to show camera", actualCameraVisible);
+  };
   return (
     <Modal
       visible={visible}
@@ -69,7 +73,9 @@ export default function EditItemModal({ visible, data, onPress }) {
               <TouchableWithoutFeedback
                 onPress={() => setCameraModalVisible(true)}
               >
-                <Icon name="camera" size={300} iconColor={colors.primary} />
+                <View>
+                  <Icon name="camera" size={300} iconColor={colors.primary} />
+                </View>
               </TouchableWithoutFeedback>
             </ImageBackground>
           </View>
@@ -115,7 +121,8 @@ export default function EditItemModal({ visible, data, onPress }) {
             console.log("THE IMG IS", img);
             setImage(img);
           }}
-          actualCameraVisible
+          actualCameraVisible={actualCameraVisible}
+          makeCameraVisible={() => showCamera(true)}
           closeActualCamera={() => setActualCameraVisible(false)}
         />
       </View>
