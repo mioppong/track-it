@@ -1,53 +1,69 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+} from "react-native";
 import colors from "../../config/colors";
-import Screen from "../Screen";
+import EditItemModal from "./EditItemModal";
 export default function EachItem({ data }) {
-  console.log("the data we get is", data);
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "row" }}>
-        <Image
-          style={{
-            width: 260,
-            height: 200,
-            borderRadius: 20,
-            flex: 1,
-            margin: "2%",
-          }}
-          source={{
-            uri:
-              "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          }}
-        />
-        <View
-          style={{
-            margin: "2%",
-            flex: 0.5,
-            backgroundColor: colors.fifth,
-            height: 201,
-            width: "35%",
-            padding: "5%",
-            borderRadius: 20,
+    <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+      <View style={styles.container}>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{
+              width: 260,
+              height: 200,
+              borderRadius: 20,
+              flex: 1,
+              margin: "2%",
+            }}
+            source={{
+              uri:
+                "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
+            }}
+          />
+          <View
+            style={{
+              margin: "2%",
+              flex: 0.5,
+              backgroundColor: colors.fifth,
+              height: 201,
+              width: "35%",
+              padding: "5%",
+              borderRadius: 20,
 
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 6,
-            },
-            shadowOpacity: 0.37,
-            shadowRadius: 7.49,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 6,
+              },
+              shadowOpacity: 0.37,
+              shadowRadius: 7.49,
 
-            elevation: 12,
-          }}
-        >
-          <Text style={styles.descriptionStyle}>{data.description}</Text>
+              elevation: 12,
+            }}
+          >
+            <Text style={styles.descriptionStyle}>{data.description}</Text>
+          </View>
         </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleStyle}>{data.title}</Text>
+        </View>
+        <EditItemModal
+          visible={modalVisible}
+          data={data}
+          onPress={() => setModalVisible(false)}
+        />
       </View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titleStyle}>{data.title}</Text>
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
