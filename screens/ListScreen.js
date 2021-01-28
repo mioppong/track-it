@@ -14,116 +14,56 @@ import Screen from "../components/Screen";
 import firebase from "firebase";
 import AppButton from "../components/AppButton";
 import Animated from "react-native-reanimated";
-import Icon from "../components/Icon";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import _ from "lodash";
+import { getData, contains } from "../api";
+
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        {
-          key: "1",
-          title: "1111111111/1111111111/1111111111/",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description:
-            "hello my name is michael opponghellis michael opponghello my name is michael opponghello my name is michael opponghello my name is michael opponghello my name is michael oppong google",
-        },
-        {
-          key: "2",
-
-          title: "toyota caravan brown",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description:
-            "license plate, 45hh4, driver 1: ama dokado, phone # is 416748654 and second driver",
-        },
-        {
-          key: "3",
-          title: "title first",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "4",
-
-          title: "title second",
-          image: "google.second image",
-          description: "my cool description",
-        },
-        {
-          key: "5",
-          title: "title first",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "6",
-
-          title: "title second",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "7",
-
-          title: "title second",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "8",
-          title: "title first",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "9",
-
-          title: "title second",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "10",
-
-          title: "title second",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "11",
-          title: "title first",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-        {
-          key: "12",
-
-          title: "title second",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          description: "my cool description",
-        },
-      ],
+      query: "",
+      loading: false,
+      items: [],
+      fullItems: [],
     };
   }
 
+  componentDidMount() {
+    this.makeRemoteRequest();
+  }
+
+  makeRemoteRequest = () => {
+    this.setState({ loading: true });
+
+    const result = getData();
+    this.setState({
+      loading: false,
+      items: result,
+      fullItems: result,
+    });
+  };
+
+  handleSearch = (text) => {
+    this.setState({ query: text });
+    const formattedQuery = text.toLowerCase();
+
+    //this filter takes al the thingsin full items, and
+    //checks if the key word is in them
+    const items = _.filter(this.state.fullItems, (items) => {
+      return contains(items, formattedQuery);
+    });
+
+    this.setState({ query: formattedQuery, items });
+  };
   render() {
+    const HEADER_HEIGHT = 70;
     const scrollY = new Animated.Value(0);
-    const diffClamp = Animated.diffClamp(scrollY, 0, 120);
-    const translateY = Animated.interpolate(diffClamp, {
-      inputRange: [0, 120],
-      outputRange: [0, -120],
+    const diffClamp = Animated.diffClamp(scrollY, 0, HEADER_HEIGHT);
+    const headerY = Animated.interpolate(diffClamp, {
+      inputRange: [0, HEADER_HEIGHT - 20],
+      outputRange: [0, -HEADER_HEIGHT],
     });
     const buttons = [
       {
@@ -142,60 +82,47 @@ export default class ListScreen extends Component {
     ];
     // styles.searchContainer,
     return (
-      <Screen style={styles.container}>
+      <View style={styles.container}>
         <Animated.View
           style={{
             top: 0,
             left: 0,
+            right: 0,
+            marginTop: "5%",
             position: "absolute",
             width: "100%",
             height: 100,
-            justifyContent: "center",
             alignItems: "center",
-            flexDirection: "row",
-            // backgroundColor: "red",
+            justifyContent: "center",
             padding: 20,
-            transform: [{ translateY }],
-            zIndex: 1,
+            transform: [{ translateY: headerY }],
+            zIndex: 1000,
+            elevation: 1000,
           }}
         >
           <TextInput
             placeholder="What Item DO you want to search for crodie?"
             style={styles.textInput}
-          />
-
-          <AppButton
-            style={styles.searchButtonStyle}
-            iconName="cloud-search-outline"
+            onChangeText={(text) => this.handleSearch(text)}
           />
         </Animated.View>
 
-        <Image
-          source={require("../assets/magnifying-glass.png")}
-          style={{
-            height: 40,
-            width: 40,
-            // backgroundColor: "red",
-            position: "absolute",
-            top: 0,
-            left: "42%",
+        <FlatList
+          scrollEventThrottle={10}
+          alwaysBounceVertical={false}
+          bounces={false}
+          contentContainerStyle={{
+            paddingBottom: 20,
+            paddingTop: HEADER_HEIGHT,
           }}
+          key={(item) => item.key + ""}
+          style={styles.listStyles}
+          data={this.state.items}
+          onScroll={(e) => {
+            scrollY.setValue(e.nativeEvent.contentOffset.y);
+          }}
+          renderItem={(item) => <EachItem data={item.item} />}
         />
-
-        <View style={styles.listContainer}>
-          <FlatList
-            alwaysBounceVertical={false}
-            bounces={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-            key={(item) => item.key.toString()}
-            style={styles.listStyles}
-            data={this.state.items}
-            onScroll={(e) => {
-              scrollY.setValue(e.nativeEvent.contentOffset.y);
-            }}
-            renderItem={(item) => <EachItem data={item.item} />}
-          />
-        </View>
 
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
@@ -220,7 +147,7 @@ export default class ListScreen extends Component {
             buttons={buttons}
           />
         </View>
-      </Screen>
+      </View>
     );
   }
 }
@@ -242,18 +169,12 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     paddingBottom: "10%",
-    padding: "4%",
+    padding: "2%",
+    marginBottom: "18%",
 
     // backgroundColor: "gray",
   },
-  listContainer: {
-    marginTop: "10%",
-    flex: 1,
-    // height: "100%",
-    marginBottom: "18%",
-    // paddingVertical: "4%",
-    // backgroundColor: "green",
-  },
+
   searchButtonStyle: { marginHorizontal: 10, marginTop: 0 },
   addItemButtomStyles: {
     fontSize: 40,
@@ -269,10 +190,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   textInput: {
-    width: "85%",
+    width: "100%",
     borderRadius: 20,
     height: 40,
     backgroundColor: colors.lightGray,
-    padding: "1%",
+    padding: "2%",
   },
 });
