@@ -36,7 +36,7 @@ class ListScreen extends Component {
   }
 
   reduxStuff = () => {
-    this.props.createUser();
+    this.props.deleteItemDispatch();
   };
 
   makeRemoteRequest = () => {
@@ -178,6 +178,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     createUser: () => {
       dispatch({ type: "CREATE_USER" });
+    },
+    deleteItemDispatch: () => {
+      dispatch({ type: "DELETE_ITEM" });
     },
   };
 };
