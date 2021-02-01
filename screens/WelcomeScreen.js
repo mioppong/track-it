@@ -6,8 +6,9 @@ import colors from "../config/colors";
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
 import { apiKeys } from "../config2";
+import { connect } from "react-redux";
 
-export default class WelcomeScreen extends Component {
+class WelcomeScreen extends Component {
   constructor(props) {
     super(props);
   }
@@ -52,49 +53,19 @@ export default class WelcomeScreen extends Component {
             .auth()
             .signInWithCredential(credential)
             .then(function (result) {
-              console.log("User Logged IN");
-
+              // IF USER LOGGED IN, THIS SECTION WILL RUN
               if (result.additionalUserInfo.isNewUser) {
-                firebase
-                  .database()
-                  .ref("/users/" + result.user.uid)
-                  .set({
-                    //set params for what data you want to store example
-                    // last_name: result.additionalUserInfo.profile.family_name,
-
-                    gmail: result.user.uid,
-                    profile_picture: result.additionalUserInfo.profile.picture,
-                    locale: result.additionalUserInfo.profile.locale,
-                    first_name: result.additionalUserInfo.profile.given_name,
-                    last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now(),
-                  });
-
-                this.setState({
-                  first_name: result.additionalUserInfo.profile.given_name,
-                }).then(function (snapshot) {
-                  //console.log('snapshot,snapshot);
-                });
+                // NEW USER HAS SIGNED UP
+                this.props.createUserDispatch(result);
               } else {
-                //if the user is already created, we want to update their last logged in and picture
-                firebase
-                  .database()
-                  .ref("/users/" + result.user.uid)
-                  .update({
-                    last_loggedin: Date.now(),
-                    profile_picture: result.additionalUserInfo.profile.picture,
-                  });
+                //if the user is already created,
+                this.props.updateUserDispatch(result);
               }
             })
             .catch(function (error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              // The email of the user's account used.
-              var email = error.email;
-              // The firebase.auth.AuthCredential type that was used.
-              var credential = error.credential;
-              // ...
+              // IF USER COULDNT LOGIN THIS SECTION WILL RUN
+              // var errorCode = error.code;
+              // var errorMessage = error.message;
             });
         } else {
           console.log("User already signed-in Firebase.");
@@ -136,6 +107,25 @@ export default class WelcomeScreen extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+    user: state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateUserDispatch: () => {
+      dispatch({ type: "UPDATE_INFO" });
+    },
+    createUserDispatch: () => {
+      dispatch({ type: "CREATE_USER" });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
 
 const styles = StyleSheet.create({
   container: {

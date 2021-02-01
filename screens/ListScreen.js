@@ -14,12 +14,13 @@ import Screen from "../components/Screen";
 import firebase from "firebase";
 import AppButton from "../components/AppButton";
 import Animated from "react-native-reanimated";
+import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import _ from "lodash";
 import { getData, contains } from "../api";
 
-export default class ListScreen extends Component {
+class ListScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +34,10 @@ export default class ListScreen extends Component {
   componentDidMount() {
     this.makeRemoteRequest();
   }
+
+  reduxStuff = () => {
+    this.props.createUser();
+  };
 
   makeRemoteRequest = () => {
     this.setState({ loading: true });
@@ -123,7 +128,14 @@ export default class ListScreen extends Component {
           }}
           renderItem={(item) => <EachItem data={item.item} />}
         />
-
+        <AppButton
+          style={{
+            top: 0,
+            left: 0,
+            right: 0,
+          }}
+          onPress={this.reduxStuff}
+        />
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
             buttonSize={50}
@@ -151,6 +163,26 @@ export default class ListScreen extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    posts: state.posts,
+    user: state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getItems: () => {
+      dispatch({ type: "GET_ALL_DATA" });
+    },
+    createUser: () => {
+      dispatch({ type: "CREATE_USER" });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListScreen);
 
 const styles = StyleSheet.create({
   buttonContainer: {

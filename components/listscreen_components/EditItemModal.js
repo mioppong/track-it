@@ -14,6 +14,7 @@ import AppButton from "../AppButton";
 import Icon from "../Icon";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import PickerItem from "./PickerItem";
+import firebase from "firebase";
 export default function EditItemModal({ visible, data, onPress }) {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [actualCameraVisible, setActualCameraVisible] = useState(false);
@@ -21,11 +22,27 @@ export default function EditItemModal({ visible, data, onPress }) {
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
 
-  const handleChangeImage = () => {};
-
   const showCamera = () => {
     setActualCameraVisible(!actualCameraVisible);
-    console.log("trying to show camera", actualCameraVisible);
+  };
+
+  const uploadImage = async () => {
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("users/user1" + "img1.png");
+
+    ref
+      .put(blob)
+      .then(() => {
+        console.log("works G");
+      })
+      .catch(() => {
+        console.log("fukkk");
+      });
   };
   return (
     <Modal
@@ -61,7 +78,7 @@ export default function EditItemModal({ visible, data, onPress }) {
               iconSize={60}
               iconName="check"
               iconColor="lightgreen"
-              onPress={() => onPress()}
+              onPress={() => uploadImage()}
             />
           </View>
           <View style={styles.imageContainer}>
@@ -118,7 +135,6 @@ export default function EditItemModal({ visible, data, onPress }) {
           visible={cameraModalVisible}
           closeCameraModal={() => setCameraModalVisible(false)}
           setImage={(img) => {
-            console.log("THE IMG IS", img);
             setImage(img);
           }}
           actualCameraVisible={actualCameraVisible}
