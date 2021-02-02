@@ -19,6 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import _ from "lodash";
 import { getData, contains } from "../api";
+import NoDataComponent from "../components/listscreen_components/NoDataComponent";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -32,11 +33,13 @@ class ListScreen extends Component {
   }
 
   componentDidMount() {
+    this.props.getItems();
     this.makeRemoteRequest();
   }
 
-  reduxStuff = () => {
-    this.props.deleteItemDispatch();
+  addItem = () => {
+    this.props.addItemDispatch();
+    // this.props.deleteItemDispatch();
   };
 
   makeRemoteRequest = () => {
@@ -74,18 +77,25 @@ class ListScreen extends Component {
       {
         color: colors.lightGray,
         content: <Ionicons name="ios-add" size={40} color={colors.primary} />,
-        action: () => firebase.auth().signOut(),
+        action: () => {
+          this.addItem();
+        },
       },
 
       {
         color: colors.white,
         content: <AntDesign name="logout" size={24} color={colors.primary} />,
-        action: () => {
-          alert("You clicked!");
-        },
+
+        action: () => firebase.auth().signOut(),
       },
     ];
     // styles.searchContainer,
+    console.log(
+      "DO WE HAVE AN EMPTY ARRAY",
+      Object.keys(this.props.items).length === 0
+    );
+    const isDataEmpty = Object.keys(this.props.items).length === 0;
+    console.log("DO WE HAVE AN EMPTY", this.props.items);
     return (
       <View style={styles.container}>
         <Animated.View
@@ -112,30 +122,26 @@ class ListScreen extends Component {
           />
         </Animated.View>
 
-        <FlatList
-          scrollEventThrottle={10}
-          alwaysBounceVertical={false}
-          bounces={false}
-          contentContainerStyle={{
-            paddingBottom: 20,
-            paddingTop: HEADER_HEIGHT,
-          }}
-          key={(item) => item.key + ""}
-          style={styles.listStyles}
-          data={this.state.items}
-          onScroll={(e) => {
-            scrollY.setValue(e.nativeEvent.contentOffset.y);
-          }}
-          renderItem={(item) => <EachItem data={item.item} />}
-        />
-        <AppButton
-          style={{
-            top: 0,
-            left: 0,
-            right: 0,
-          }}
-          onPress={this.reduxStuff}
-        />
+        {!isDataEmpty && (
+          <FlatList
+            scrollEventThrottle={10}
+            alwaysBounceVertical={false}
+            bounces={false}
+            contentContainerStyle={{
+              paddingBottom: 20,
+              paddingTop: HEADER_HEIGHT,
+            }}
+            key={(item) => item.key + ""}
+            style={styles.listStyles}
+            data={this.props.items}
+            onScroll={(e) => {
+              scrollY.setValue(e.nativeEvent.contentOffset.y);
+            }}
+            renderItem={(item) => <EachItem data={item.item} />}
+          />
+        )}
+
+        {isDataEmpty && <NoDataComponent />}
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
             buttonSize={50}
@@ -166,8 +172,8 @@ class ListScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.posts,
-    user: state.user,
+    items: state.items,
+    uid: state.uid,
   };
 };
 
@@ -181,6 +187,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     deleteItemDispatch: () => {
       dispatch({ type: "DELETE_ITEM" });
+    },
+    addItemDispatch: () => {
+      dispatch({ type: "ADD_ITEM" });
     },
   };
 };
