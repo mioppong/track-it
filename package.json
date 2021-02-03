@@ -24,6 +24,7 @@
     "firebase": "^7.9.0",
     "loadash": "^1.0.0",
     "lodash": "^4.17.20",
+    "nanoid": "^3.1.20",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
@@ -31,6 +32,7 @@
     "react-native-animated-nav-tab-bar": "^3.0.5",
     "react-native-animated-spinkit": "^1.5.0",
     "react-native-gesture-handler": "~1.8.0",
+    "react-native-get-random-values": "^1.5.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-paper": "^4.6.0",
     "react-native-reanimated": "^1.13.2",
@@ -40,7 +42,8 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

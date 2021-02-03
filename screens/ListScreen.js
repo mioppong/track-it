@@ -20,6 +20,7 @@ import { AntDesign } from "@expo/vector-icons";
 import _ from "lodash";
 import { getData, contains } from "../api";
 import NoDataComponent from "../components/listscreen_components/NoDataComponent";
+import AddItemModal from "../components/listscreen_components/AddItemModal";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class ListScreen extends Component {
       loading: false,
       items: [],
       fullItems: [],
+      addItemModalVisible: false,
     };
   }
 
@@ -78,7 +80,8 @@ class ListScreen extends Component {
         color: colors.lightGray,
         content: <Ionicons name="ios-add" size={40} color={colors.primary} />,
         action: () => {
-          this.addItem();
+          // this.addItem();
+          this.setState({ addItemModalVisible: true });
         },
       },
 
@@ -140,6 +143,10 @@ class ListScreen extends Component {
             renderItem={(item) => <EachItem data={item.item} />}
           />
         )}
+        <AddItemModal
+          visible={this.state.addItemModalVisible}
+          closeModal={() => this.setState({ addItemModalVisible: false })}
+        />
 
         {isDataEmpty && <NoDataComponent />}
         <View style={styles.buttonContainer}>
