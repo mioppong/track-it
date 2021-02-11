@@ -1,31 +1,27 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+const currentUser = firebase.auth().currentUser;
+const getUID = async () => {
+  var uid = firebase.auth().currentUser.uid;
 
-export const getAllItems = () => {
-  const currentUser = firebase.auth().currentUser;
+  return uid;
+};
 
-  var data = {};
-  var returningData = {};
-  if (currentUser) {
-    const result = firebase
-      .database()
-      .ref("/users/" + currentUser.uid)
-      .on("value", (snapshop) => {
-        data.user = snapshop;
-      });
-  }
-  if (data.user) {
-    var a = JSON.stringify(data.user);
-    var result = JSON.parse(a);
+export const getAllItems = async () => {
+  const currentUser = await firebase.auth().currentUser;
 
-    returningData = Object.values(result.items);
-    console.log("returning data is", returningData);
-  }
+  const eventRef = firebase.database().ref("/users/" + currentUser.uid);
+  const snapshot = await eventRef.once("value");
+  const value = snapshot.val();
+
+  var a = JSON.stringify(value);
+  var result_ = JSON.parse(a);
+  const returningData = Object.values(result_.items);
 
   return returningData;
 };
 
 export const newUser = () => {
-  const currentUser = firebase.auth().currentUser;
   const itemObj = {
     key: "12",
     title: "title second",
@@ -52,27 +48,28 @@ export const updateUser = () => {
   console.log("updating user crodie");
 };
 
-export const addItem = () => {
-  const currentUser = firebase.auth().currentUser;
-  const itemObj = {
-    key: "12",
-    title: "DEMON TIME",
-    image:
-      "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-    description: "my cool description",
-  };
+export const addItem = (payload) => {
   const ref = firebase
     .database()
     .ref("/users/" + currentUser.uid)
     .child("items")
-    .push(itemObj);
+    .push(payload);
 
   ref.update({ key: ref.key });
 };
 
-export const deleteItem = (item) => {
-  const currentUser = firebase.auth().currentUser;
+export const addItemFireStore = async (payload) => {
+  const response = await firebase
+    .firestore()
+    .collection("users")
+    .doc("1")
+    .add(payload);
 
+  console.log("response is", response);
+  // ref.update({ key: ref.key });
+};
+
+export const deleteItem = (item) => {
   const del = firebase
     .database()
     .ref("/users/" + currentUser.uid)

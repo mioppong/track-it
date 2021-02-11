@@ -18,7 +18,9 @@ import PickerItem from "./PickerItem";
 import firebase from "firebase";
 import "react-native-get-random-values";
 import { nanoid } from "nanoid";
-export default function AddItemModal({ visible, data, closeModal }) {
+import { connect } from "react-redux";
+
+function AddItemModal({ visible, data, closeModal, addItemDispatch }) {
   data = {
     key: "12",
     title: "title second",
@@ -39,10 +41,6 @@ export default function AddItemModal({ visible, data, closeModal }) {
 
   const handleSaveData = () => {
     uploadImage();
-
-    console.log("DEMON TIME IS LINK IS", imageRef);
-    console.log("TITLE IS", title);
-    console.log("DESCRIPTION IS", description);
   };
   const uploadImage = async () => {
     const fileExtension = image.split(".").pop();
@@ -50,7 +48,6 @@ export default function AddItemModal({ visible, data, closeModal }) {
 
     const response = await fetch(image);
     const blob = await response.blob();
-    console.log("NANOID   is", nanoid());
     const currentUser = firebase.auth().currentUser;
 
     var ref = firebase
@@ -61,11 +58,16 @@ export default function AddItemModal({ visible, data, closeModal }) {
     ref
       .put(blob)
       .then((snapshot) => {
-        return ref.getDownloadURL().then((url) => setImageRef(url));
+        return ref.getDownloadURL().then((url) => {
+          const payload = { imageRef: url, title, description };
+          addItemDispatch(payload);
+        });
       })
       .catch(() => {
         console.log("fukkk");
       });
+
+    closeModal();
   };
   return (
     <Modal
@@ -173,6 +175,16 @@ export default function AddItemModal({ visible, data, closeModal }) {
     </Modal>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItemDispatch: (payload) => {
+      dispatch({ type: "ADD_ITEM", payload });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddItemModal);
 
 const styles = StyleSheet.create({
   buttonContainer: {

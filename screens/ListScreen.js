@@ -93,12 +93,10 @@ class ListScreen extends Component {
       },
     ];
     // styles.searchContainer,
-    console.log(
-      "DO WE HAVE AN EMPTY ARRAY",
-      Object.keys(this.props.items).length === 0
-    );
-    const isDataEmpty = Object.keys(this.props.items).length === 0;
-    console.log("DO WE HAVE AN EMPTY", this.props.items);
+
+    const isDataEmpty = false;
+    // Object.keys(this.props.items).length === 0;
+    // console.log("DO WE HAVE AN EMPTY", this.props.items);
     return (
       <View style={styles.container}>
         <Animated.View
@@ -124,8 +122,7 @@ class ListScreen extends Component {
             onChangeText={(text) => this.handleSearch(text)}
           />
         </Animated.View>
-
-        {!isDataEmpty && (
+        {/* {!isDataEmpty && (
           <FlatList
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
@@ -136,13 +133,16 @@ class ListScreen extends Component {
             }}
             key={(item) => item.key + ""}
             style={styles.listStyles}
-            data={this.props.items}
+            data={this.state.fullItems}
             onScroll={(e) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
             renderItem={(item) => <EachItem data={item.item} />}
           />
-        )}
+        )} */}
+        <AppButton onPress={() => this.props.getItems()} />
+        <Text style={{ fontSize: 100, color: "red" }}>{this.props.uid}</Text>
+
         <AddItemModal
           visible={this.state.addItemModalVisible}
           closeModal={() => this.setState({ addItemModalVisible: false })}
@@ -187,7 +187,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getItems: () => {
-      dispatch({ type: "GET_ALL_DATA" });
+      dispatch({ type: "GET_ALL_ITEMS" });
     },
     createUser: () => {
       dispatch({ type: "CREATE_USER" });

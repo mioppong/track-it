@@ -4,11 +4,12 @@ import { Plane } from "react-native-animated-spinkit";
 import colors from "../config/colors";
 import firebase from "firebase";
 import { firebaseConfig } from "../config";
+import { connect } from "react-redux";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-export default class LoadingScreen extends Component {
+class LoadingScreen extends Component {
   constructor(props) {
     super(props);
   }
@@ -19,6 +20,7 @@ export default class LoadingScreen extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         //user logged in
+        this.props.setInfoDispatch(user.uid);
         this.props.navigation.reset({
           index: 0,
           routes: [{ name: "Tabs" }],
@@ -53,6 +55,14 @@ export default class LoadingScreen extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setInfoDispatch: (payload) => {
+      dispatch({ type: "SET_INFO", payload });
+    },
+  };
+};
+export default connect(null, mapDispatchToProps)(LoadingScreen);
 const styles = StyleSheet.create({
   lottie: {
     width: 100,

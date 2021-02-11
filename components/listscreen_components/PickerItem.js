@@ -67,7 +67,7 @@ export default function PickerItem(props) {
     setActualCameraVisible(false);
     props.closeCameraModal();
   };
-  console.log("actual camera is visible", actualCameraVisible);
+  // console.log("actual camera is visible", actualCameraVisible);
   return (
     <>
       <Modal animationType="fade" transparent visible={props.visible}>
@@ -78,7 +78,7 @@ export default function PickerItem(props) {
               iconSize={80}
               style={styles.buttonStyle}
               onPress={() => {
-                console.log("SHOW CAMERA");
+                // console.log("SHOW CAMERA");
                 showCamera();
               }}
             />
@@ -136,7 +136,6 @@ export default function PickerItem(props) {
                 iconColor="red"
                 iconSize={75}
                 onPress={() => {
-                  console.log("trying croo");
                   setActualCameraVisible(false);
                 }}
               />
