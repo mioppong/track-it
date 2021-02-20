@@ -1,16 +1,8 @@
 import React, { Component } from "react";
 import { AnimatedAbsoluteButton } from "react-native-animated-absolute-buttons";
-import {
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  TextInput,
-  Image,
-} from "react-native";
+import { StyleSheet, View, FlatList, TextInput, Image } from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
-import Screen from "../components/Screen";
 import firebase from "firebase";
 import AppButton from "../components/AppButton";
 import Animated from "react-native-reanimated";
@@ -21,6 +13,8 @@ import _ from "lodash";
 import { getData, contains } from "../api";
 import NoDataComponent from "../components/listscreen_components/NoDataComponent";
 import AddItemModal from "../components/listscreen_components/AddItemModal";
+import { addItem, getAllItems } from "../reducers/reduxFunctions";
+import LoadingComponent from "../components/LoadingComponent";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -28,19 +22,43 @@ class ListScreen extends Component {
     this.state = {
       query: "",
       loading: false,
-      items: [],
+      items: [
+        {
+          description: "my cool description",
+          image:
+            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
+          key: "12121",
+          title: "title second",
+        },
+        {
+          description: "my cool description",
+          imageRef:
+            "https://firebasestorage.googleapis.com/v0/b/tracker-3e334.appspot.com/o/images%2F3whQUG3iWFAWivOCsCcUd.jpg?alt=media&token=dd8f91ee-d5d5-4dc3-bd54-43fd9a6d8cf8",
+          key: "-MTb_eX0K4Vq0oB_qAER",
+          title: "title second",
+        },
+        {
+          description: "my cool description",
+          image:
+            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
+          key: "dsfsdf",
+          title: "title second",
+        },
+        {
+          description: "my cool description",
+          image:
+            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
+          key: "dsdfsdfs",
+          title: "title second",
+        },
+      ],
       fullItems: [],
       addItemModalVisible: false,
     };
   }
 
-  componentDidMount() {
-    this.props.getItems();
-    this.makeRemoteRequest();
-  }
-
   addItem = () => {
-    this.props.addItemDispatch();
+    this.props.addItem();
     // this.props.deleteItemDispatch();
   };
 
@@ -94,7 +112,7 @@ class ListScreen extends Component {
     ];
     // styles.searchContainer,
 
-    const isDataEmpty = false;
+    // const isDataEmpty = this.props.items.length > 0 ? false : true;
     // Object.keys(this.props.items).length === 0;
     // console.log("DO WE HAVE AN EMPTY", this.props.items);
     return (
@@ -117,13 +135,16 @@ class ListScreen extends Component {
           }}
         >
           <TextInput
-            placeholder="What Item DO you want to search for crodie?"
+            placeholder="What Item DO you want to search for crodie??"
             style={styles.textInput}
             onChangeText={(text) => this.handleSearch(text)}
           />
         </Animated.View>
-        {/* {!isDataEmpty && (
+
+        {/* if list is not empty */}
+        {!_.isEmpty(this.props.items) ? (
           <FlatList
+            ListEmptyComponent="empty"
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
             bounces={false}
@@ -131,24 +152,44 @@ class ListScreen extends Component {
               paddingBottom: 20,
               paddingTop: HEADER_HEIGHT,
             }}
-            key={(item) => item.key + ""}
+            key={(item) => item.key + "bow"}
             style={styles.listStyles}
-            data={this.state.fullItems}
+            data={this.props.items}
             onScroll={(e) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
             renderItem={(item) => <EachItem data={item.item} />}
           />
-        )} */}
-        <AppButton onPress={() => this.props.getItems()} />
-        <Text style={{ fontSize: 100, color: "red" }}>{this.props.uid}</Text>
+        ) : null}
+
+        {_.isEmpty(this.props.items) && this.props.loading && (
+          <LoadingComponent />
+        )}
+
+        {this.props.noData && !this.props.loading && <NoDataComponent />}
+
+        {/* {!this.props.items && <NoDataComponent />} */}
+        {/* <EachItem data={item.item} /> */}
+        {/* <AppButton
+          style={{ height: 200, width: 200 }}
+          onPress={() => this.props.addItem({ uid: this.props.uid, item: {} })}
+        />
+        <AppButton
+          style={{ height: 200, width: 200, backgroundColor: "green" }}
+          onPress={() =>
+            this.props.getAllItems({
+              type: "GET_ALL_ITEMS",
+              uid: this.props.uid,
+            })
+          }
+        /> */}
 
         <AddItemModal
           visible={this.state.addItemModalVisible}
           closeModal={() => this.setState({ addItemModalVisible: false })}
         />
 
-        {isDataEmpty && <NoDataComponent />}
+        {/* {isDataEmpty && <NoDataComponent />} */}
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
             buttonSize={50}
@@ -181,13 +222,15 @@ const mapStateToProps = (state) => {
   return {
     items: state.items,
     uid: state.uid,
+    loading: state.loading,
+    noData: state.noData,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getItems: () => {
-      dispatch({ type: "GET_ALL_ITEMS" });
+    getAllItems: (payload) => {
+      dispatch(getAllItems(payload));
     },
     createUser: () => {
       dispatch({ type: "CREATE_USER" });
@@ -195,8 +238,8 @@ const mapDispatchToProps = (dispatch) => {
     deleteItemDispatch: () => {
       dispatch({ type: "DELETE_ITEM" });
     },
-    addItemDispatch: () => {
-      dispatch({ type: "ADD_ITEM" });
+    addItem: (payload) => {
+      dispatch(addItem(payload));
     },
   };
 };

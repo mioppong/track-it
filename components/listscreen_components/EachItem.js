@@ -12,7 +12,7 @@ import colors from "../../config/colors";
 import EditItemModal from "./EditItemModal";
 export default function EachItem({ data }) {
   const [modalVisible, setModalVisible] = useState(false);
-
+  console.log(data);
   return (
     <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
       <View style={styles.container}>
@@ -26,8 +26,7 @@ export default function EachItem({ data }) {
               margin: "2%",
             }}
             source={{
-              uri:
-                "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
+              uri: data.image,
             }}
           />
           <View

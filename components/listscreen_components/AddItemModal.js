@@ -20,20 +20,23 @@ import "react-native-get-random-values";
 import { nanoid } from "nanoid";
 import { connect } from "react-redux";
 
-function AddItemModal({ visible, data, closeModal, addItemDispatch }) {
-  data = {
-    key: "12",
-    title: "title second",
-    image:
-      "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-    description: "my cool description",
-  };
+import { addItem, getAllItems } from "../../reducers/reduxFunctions";
+
+function AddItemModal({
+  visible,
+  data,
+  closeModal,
+  addItemDispatch,
+  uid,
+  getAllItems,
+}) {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [actualCameraVisible, setActualCameraVisible] = useState(false);
-  const [image, setImage] = useState(data.image);
-  const [imageRef, setImageRef] = useState("");
-  const [title, setTitle] = useState(data.title);
-  const [description, setDescription] = useState(data.description);
+  const [image, setImage] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/tracker-3e334.appspot.com/o/images%2Fblank.png?alt=media&token=3efec7da-c0fa-440b-8885-afee478d3322"
+  );
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const showCamera = () => {
     setActualCameraVisible(!actualCameraVisible);
@@ -48,19 +51,16 @@ function AddItemModal({ visible, data, closeModal, addItemDispatch }) {
 
     const response = await fetch(image);
     const blob = await response.blob();
-    const currentUser = firebase.auth().currentUser;
 
-    var ref = firebase
-      .storage()
-      .ref()
-      .child("users/" + fileName);
+    var ref = firebase.storage().ref("/images/").child(fileName);
 
     ref
       .put(blob)
       .then((snapshot) => {
         return ref.getDownloadURL().then((url) => {
-          const payload = { imageRef: url, title, description };
-          addItemDispatch(payload);
+          const payload = { image: url, title, description };
+          addItemDispatch({ uid: uid, item: payload });
+          getAllItems({ uid });
         });
       })
       .catch(() => {
@@ -116,7 +116,7 @@ function AddItemModal({ visible, data, closeModal, addItemDispatch }) {
                 onPress={() => setCameraModalVisible(true)}
               >
                 <View>
-                  <Icon name="camera" size={300} iconColor={colors.primary} />
+                  <Icon name="camera" size={200} iconColor={colors.fifth} />
                 </View>
               </TouchableWithoutFeedback>
             </ImageBackground>
@@ -179,12 +179,23 @@ function AddItemModal({ visible, data, closeModal, addItemDispatch }) {
 const mapDispatchToProps = (dispatch) => {
   return {
     addItemDispatch: (payload) => {
-      dispatch({ type: "ADD_ITEM", payload });
+      dispatch(addItem(payload));
+    },
+    getAllItems: (payload) => {
+      dispatch(getAllItems(payload));
     },
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddItemModal);
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    uid: state.uid,
+    loading: state.loading,
+    noData: state.noData,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AddItemModal);
 
 const styles = StyleSheet.create({
   buttonContainer: {

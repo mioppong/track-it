@@ -5,6 +5,11 @@ import colors from "../config/colors";
 import firebase from "firebase";
 import { firebaseConfig } from "../config";
 import { connect } from "react-redux";
+import {
+  getAllItemsFirestore,
+  newUser,
+  getAllItems,
+} from "../reducers/reduxFunctions";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -21,6 +26,8 @@ class LoadingScreen extends Component {
       if (user) {
         //user logged in
         this.props.setInfoDispatch(user.uid);
+        this.props.getAllItems({ uid: user.uid });
+
         this.props.navigation.reset({
           index: 0,
           routes: [{ name: "Tabs" }],
@@ -58,7 +65,11 @@ class LoadingScreen extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setInfoDispatch: (payload) => {
-      dispatch({ type: "SET_INFO", payload });
+      dispatch(newUser(payload));
+    },
+
+    getAllItems: (payload) => {
+      dispatch(getAllItems(payload));
     },
   };
 };

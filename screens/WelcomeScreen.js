@@ -110,8 +110,8 @@ class WelcomeScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.posts,
-    user: state.user,
+    // uid: state.uid,
+    // items: state.items,
   };
 };
 
