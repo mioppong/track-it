@@ -46,6 +46,7 @@ function AddItemModal({
   const handleSaveData = () => {
     uploadImage();
   };
+
   const uploadImage = async () => {
     const fileExtension = image.split(".").pop();
     const fileName = `${nanoid()}.${fileExtension}`;

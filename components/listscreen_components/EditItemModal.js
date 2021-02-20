@@ -15,34 +15,65 @@ import Icon from "../Icon";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import PickerItem from "./PickerItem";
 import firebase from "firebase";
-export default function EditItemModal({ visible, data, onPress }) {
+import "react-native-get-random-values";
+//
+import { nanoid } from "nanoid";
+import { connect } from "react-redux";
+import _ from "lodash";
+import { updateItem, getAllItems } from "../../reducers/reduxFunctions";
+
+function EditItemModal({
+  uid,
+  visible,
+  data,
+  closeModal,
+  updateItem,
+  getAllItems,
+}) {
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [actualCameraVisible, setActualCameraVisible] = useState(false);
   const [image, setImage] = useState(data.image);
   const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
 
+  const handleSaveData = () => {
+    if (_.isEqualWith(image, data.image)) {
+      const item = { image, title, description, key: data.key };
+      updateItem({ uid: uid, key: data.key, item: item });
+      getAllItems({ uid });
+
+      closeModal();
+    } else {
+      uploadImage();
+    }
+  };
   const showCamera = () => {
     setActualCameraVisible(!actualCameraVisible);
   };
 
   const uploadImage = async () => {
+    const fileExtension = image.split(".").pop();
+    const fileName = `${nanoid()}.${fileExtension}`;
+
     const response = await fetch(image);
     const blob = await response.blob();
 
-    var ref = firebase
-      .storage()
-      .ref()
-      .child("users/user1" + "img1.png");
+    var ref = firebase.storage().ref("/images/").child(fileName);
 
     ref
       .put(blob)
-      .then(() => {
-        console.log("works G");
+      .then((snapshot) => {
+        return ref.getDownloadURL().then((url) => {
+          const payload = { image: url, title, description, key: data.key };
+          updateItem({ uid: uid, key: data.key, item: payload });
+          getAllItems({ uid });
+        });
       })
       .catch(() => {
         console.log("fukkk");
       });
+
+    closeModal();
   };
   return (
     <Modal
@@ -66,7 +97,7 @@ export default function EditItemModal({ visible, data, onPress }) {
               iconName="close"
               iconSize={60}
               iconColor="red"
-              onPress={() => onPress()}
+              onPress={() => closeModal()}
             />
             <AppButton
               style={{
@@ -78,7 +109,7 @@ export default function EditItemModal({ visible, data, onPress }) {
               iconSize={60}
               iconName="check"
               iconColor="lightgreen"
-              onPress={() => uploadImage()}
+              onPress={() => handleSaveData()}
             />
           </View>
           <View style={styles.imageContainer}>
@@ -91,7 +122,7 @@ export default function EditItemModal({ visible, data, onPress }) {
                 onPress={() => setCameraModalVisible(true)}
               >
                 <View>
-                  <Icon name="camera" size={300} iconColor={colors.primary} />
+                  <Icon name="camera" size={100} iconColor={colors.fifth} />
                 </View>
               </TouchableWithoutFeedback>
             </ImageBackground>
@@ -109,7 +140,11 @@ export default function EditItemModal({ visible, data, onPress }) {
             >
               Title:
             </Text>
-            <TextInput value={title} style={styles.titleInput} />
+            <TextInput
+              onChangeText={(text) => setTitle(text)}
+              value={title}
+              style={styles.titleInput}
+            />
             <Text
               style={{
                 fontWeight: "bold",
@@ -123,6 +158,7 @@ export default function EditItemModal({ visible, data, onPress }) {
               Description:
             </Text>
             <TextInput
+              onChangeText={(text) => setDescription(text)}
               value={description}
               numberOfLines={4}
               multiline={true}
@@ -145,7 +181,27 @@ export default function EditItemModal({ visible, data, onPress }) {
     </Modal>
   );
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateItem: (payload) => {
+      dispatch(updateItem(payload));
+    },
+    getAllItems: (payload) => {
+      dispatch(getAllItems(payload));
+    },
+  };
+};
 
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    uid: state.uid,
+    loading: state.loading,
+    noData: state.noData,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditItemModal);
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
@@ -175,7 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    opacity: 0.6,
+    opacity: 0.8,
   },
   imageContainer: {
     marginVertical: "2%",
