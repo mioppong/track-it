@@ -4,7 +4,6 @@ import { StyleSheet, View, FlatList, TextInput, Image } from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import firebase from "firebase";
-import AppButton from "../components/AppButton";
 import Animated from "react-native-reanimated";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
