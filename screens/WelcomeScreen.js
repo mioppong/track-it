@@ -100,7 +100,7 @@ class WelcomeScreen extends Component {
     return (
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
-          <Text> FIRST ITERATION </Text>
+          <Text> SECOND ITERATION </Text>
           <AppButton onPress={this.signInWithGoogleAsync} />
         </View>
       </Screen>
