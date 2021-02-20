@@ -21,36 +21,8 @@ class ListScreen extends Component {
     this.state = {
       query: "",
       loading: false,
-      items: [
-        {
-          description: "my cool description",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          key: "12121",
-          title: "title second",
-        },
-        {
-          description: "my cool description",
-          imageRef:
-            "https://firebasestorage.googleapis.com/v0/b/tracker-3e334.appspot.com/o/images%2F3whQUG3iWFAWivOCsCcUd.jpg?alt=media&token=dd8f91ee-d5d5-4dc3-bd54-43fd9a6d8cf8",
-          key: "-MTb_eX0K4Vq0oB_qAER",
-          title: "title second",
-        },
-        {
-          description: "my cool description",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          key: "dsfsdf",
-          title: "title second",
-        },
-        {
-          description: "my cool description",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          key: "dsdfsdfs",
-          title: "title second",
-        },
-      ],
+      items: this.props.items,
+
       fullItems: [],
       addItemModalVisible: false,
     };
@@ -74,13 +46,16 @@ class ListScreen extends Component {
 
   handleSearch = (text) => {
     this.setState({ query: text });
-    const formattedQuery = text.toLowerCase();
-
+    const formattedQuery = text;
+    console.log("query is", text);
     //this filter takes al the thingsin full items, and
     //checks if the key word is in them
-    const items = _.filter(this.state.fullItems, (items) => {
+
+    const items = _.filter(this.props.items, (items) => {
       return contains(items, formattedQuery);
     });
+
+    console.log("items is", items);
 
     this.setState({ query: formattedQuery, items });
   };
@@ -153,7 +128,7 @@ class ListScreen extends Component {
             }}
             key={(item) => item.key + "bow"}
             style={styles.listStyles}
-            data={this.props.items}
+            data={this.state.items}
             onScroll={(e) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
