@@ -78,6 +78,7 @@ class WelcomeScreen extends Component {
     try {
       const result = await Google.logInAsync({
         androidClientId: apiKeys.expoClientAndroidGoogleSignIn,
+
         iosClientId: apiKeys.expoClientIosGoogleSignIn,
         androidStandaloneAppClientId: apiKeys.androidGoogle,
         iosStandaloneAppClientId: apiKeys.iOSGoogle,
@@ -100,7 +101,7 @@ class WelcomeScreen extends Component {
     return (
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
-          <Text> SECOND ITERATION </Text>
+          <Text> third ITERATION </Text>
           <AppButton onPress={this.signInWithGoogleAsync} />
         </View>
       </Screen>
