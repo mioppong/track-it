@@ -40,6 +40,7 @@ const rootReducer = (state = initState, action) => {
       return newState;
 
     case types.NO_DATA_AVAILABLE:
+      newState.items = [];
       newState.loading = false;
       newState.noData = true;
 

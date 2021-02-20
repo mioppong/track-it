@@ -67,12 +67,19 @@ export const addItem = (payload) => {
   };
 };
 
-export const deleteItem = (item) => {
-  const del = firebase
-    .database()
-    .ref("/users/" + currentUser.uid)
-    .child("/items/")
-    .equalTo("DEMON TIME");
+export const deleteItem = (payload) => {
+  return async function (dispatch) {
+    dispatch({ type: types.DELETE_ITEM_START });
+    console.log("payload is", payload);
+    const { uid, key } = payload;
+    const del = firebase
+      .database()
+      .ref("/users/")
+      .child(uid)
+      .child("items")
+      .child(key)
+      .remove();
 
-  console.log("delete this", del);
+    dispatch({ type: types.DELETE_ITEM_SUCCESS });
+  };
 };

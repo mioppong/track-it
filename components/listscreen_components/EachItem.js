@@ -8,63 +8,107 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import Swipeout from "react-native-swipeout";
+import { connect } from "react-redux";
 import colors from "../../config/colors";
+import { deleteItem, getAllItems } from "../../reducers/reduxFunctions";
+import AppButton from "../AppButton";
 import EditItemModal from "./EditItemModal";
-export default function EachItem({ data }) {
+
+function EachItem({ data, deleteItem, uid, getAllItems }) {
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(data);
+
+  const handleDelete = () => {
+    deleteItem({ uid, key: data.key });
+    getAllItems({ uid });
+  };
+  const leftSwipe = () => {
+    return (
+      <AppButton
+        iconName="delete"
+        style={{ alignSelf: "center", marginHorizontal: 15 }}
+        onPress={() => handleDelete()}
+      />
+    );
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-      <View style={styles.container}>
-        <View style={{ flexDirection: "row" }}>
-          <Image
-            style={{
-              width: 260,
-              height: 200,
-              borderRadius: 20,
-              flex: 1,
-              margin: "2%",
-            }}
-            source={{
-              uri: data.image,
-            }}
-          />
-          <View
-            style={{
-              margin: "2%",
-              flex: 0.5,
-              backgroundColor: colors.fifth,
-              height: 201,
-              width: "35%",
-              padding: "5%",
-              borderRadius: 20,
+    <Swipeable renderLeftActions={leftSwipe}>
+      <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+        <View style={styles.container}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              style={{
+                width: 260,
+                height: 200,
+                borderRadius: 20,
+                flex: 1,
+                margin: "2%",
+              }}
+              source={{
+                uri: data.image,
+              }}
+            />
+            <View
+              style={{
+                margin: "2%",
+                flex: 0.5,
+                backgroundColor: colors.fifth,
+                height: 201,
+                width: "35%",
+                padding: "5%",
+                borderRadius: 20,
 
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 6,
-              },
-              shadowOpacity: 0.37,
-              shadowRadius: 7.49,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 6,
+                },
+                shadowOpacity: 0.37,
+                shadowRadius: 7.49,
 
-              elevation: 12,
-            }}
-          >
-            <Text style={styles.descriptionStyle}>{data.description}</Text>
+                elevation: 12,
+              }}
+            >
+              <Text style={styles.descriptionStyle}>{data.description}</Text>
+            </View>
           </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleStyle}>{data.title}</Text>
+          </View>
+          <EditItemModal
+            visible={modalVisible}
+            data={data}
+            onPress={() => setModalVisible(false)}
+          />
         </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleStyle}>{data.title}</Text>
-        </View>
-        <EditItemModal
-          visible={modalVisible}
-          data={data}
-          onPress={() => setModalVisible(false)}
-        />
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </Swipeable>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteItem: (payload) => {
+      dispatch(deleteItem(payload));
+    },
+    getAllItems: (payload) => {
+      dispatch(getAllItems(payload));
+    },
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    uid: state.uid,
+    loading: state.loading,
+    noData: state.noData,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EachItem);
 
 const styles = StyleSheet.create({
   container: {
