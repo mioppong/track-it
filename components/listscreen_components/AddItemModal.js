@@ -17,6 +17,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import PickerItem from "./PickerItem";
 import firebase from "firebase";
 import "react-native-get-random-values";
+//
 import { nanoid } from "nanoid";
 import { connect } from "react-redux";
 
