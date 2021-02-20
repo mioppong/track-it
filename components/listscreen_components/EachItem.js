@@ -80,7 +80,7 @@ function EachItem({ data, deleteItem, uid, getAllItems }) {
           <EditItemModal
             visible={modalVisible}
             data={data}
-            onPress={() => setModalVisible(false)}
+            closeModal={() => setModalVisible(false)}
           />
         </View>
       </TouchableWithoutFeedback>

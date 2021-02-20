@@ -37,20 +37,12 @@ export const getAllItems = (payload) => {
 export const newUser = (uid) => {
   return function (dispatch) {
     dispatch({ type: "SET_INFO_START" });
-
     dispatch({ type: types.SET_INFO_SUCCESS, payload: uid });
   };
 };
 
 export const addItem = (payload) => {
   return async function (dispatch) {
-    const itemObj = {
-      key: "12",
-      title: "title second",
-      image:
-        "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-      description: "my cool description",
-    };
     const { uid, item } = payload;
 
     console.log("uid we get in add obj", uid);
@@ -81,5 +73,22 @@ export const deleteItem = (payload) => {
       .remove();
 
     dispatch({ type: types.DELETE_ITEM_SUCCESS });
+  };
+};
+
+export const updateItem = (payload) => {
+  return async function (dispatch) {
+    const { key, uid, item } = payload;
+    dispatch({ type: types.UPDATE_ITEM_START });
+    console.log("INSIDE REDUX FUNCTIONS UPDATE, payloadis", payload);
+    const update = await firebase
+      .database()
+      .ref("/users/")
+      .child(uid)
+      .child("items")
+      .child(key)
+      .update(item);
+
+    dispatch({ type: types.UPDATE_ITEM_SUCCESS });
   };
 };

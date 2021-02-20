@@ -39,11 +39,17 @@ const rootReducer = (state = initState, action) => {
       newState.loading = false;
       return newState;
 
+    case types.UPDATE_ITEM_START:
+      newState.loading = true;
+      return newState;
+    case types.UPDATE_ITEM_SUCCESS:
+      newState.loading = false;
+      return newState;
+
     case types.NO_DATA_AVAILABLE:
       newState.items = [];
       newState.loading = false;
       newState.noData = true;
-
       return newState;
   }
 

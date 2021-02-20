@@ -53,6 +53,7 @@ export default function PickerItem(props) {
       // setImage(result.uri);
       passImageToEditScreen(result.uri);
     }
+    props.closeCameraModal();
   };
   const showCamera = () => {
     setActualCameraVisible(true);
