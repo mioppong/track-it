@@ -6,7 +6,7 @@ function Icon({ name, size = 40, iconColor = "#fff" }) {
   /*
   THIS CLASS IS USED BY APPBUTON, AND SOMETIMES I USE IT SEPARATE
   IT GETS ICONS ONLY FROM MATERIALCOMMUNITY ICONS THOUGH
-
+;
 */
 
   return (
