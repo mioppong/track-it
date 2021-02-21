@@ -9,11 +9,11 @@ import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import _ from "lodash";
-import { getData, contains } from "../api";
 import NoDataComponent from "../components/listscreen_components/NoDataComponent";
 import AddItemModal from "../components/listscreen_components/AddItemModal";
-import { addItem, getAllItems } from "../reducers/reduxFunctions";
+import { addItem, getAllItems, search } from "../reducers/reduxFunctions";
 import LoadingComponent from "../components/LoadingComponent";
+import NoItemsAssociated from "../components/listscreen_components/NoItemsAssociated";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -21,68 +21,18 @@ class ListScreen extends Component {
     this.state = {
       query: "",
       loading: false,
-      items: [
-        {
-          description: "my cool description",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          key: "12121",
-          title: "title second",
-        },
-        {
-          description: "my cool description",
-          imageRef:
-            "https://firebasestorage.googleapis.com/v0/b/tracker-3e334.appspot.com/o/images%2F3whQUG3iWFAWivOCsCcUd.jpg?alt=media&token=dd8f91ee-d5d5-4dc3-bd54-43fd9a6d8cf8",
-          key: "-MTb_eX0K4Vq0oB_qAER",
-          title: "title second",
-        },
-        {
-          description: "my cool description",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          key: "dsfsdf",
-          title: "title second",
-        },
-        {
-          description: "my cool description",
-          image:
-            "https://images.unsplash.com/photo-1610393813108-fc9e481ce228?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80",
-          key: "dsdfsdfs",
-          title: "title second",
-        },
-      ],
-      fullItems: [],
+      items: this.props.items,
       addItemModalVisible: false,
     };
   }
 
-  addItem = () => {
-    this.props.addItem();
-    // this.props.deleteItemDispatch();
-  };
-
-  makeRemoteRequest = () => {
-    this.setState({ loading: true });
-
-    const result = getData();
-    this.setState({
-      loading: false,
-      items: result,
-      fullItems: result,
-    });
-  };
-
   handleSearch = (text) => {
-    this.setState({ query: text });
-    const formattedQuery = text.toLowerCase();
-
-    //this filter takes al the thingsin full items, and
-    //checks if the key word is in them
-    const items = _.filter(this.state.fullItems, (items) => {
-      return contains(items, formattedQuery);
+    this.props.search({
+      query: text.toLowerCase(),
+      items: this.props.fullItems,
     });
 
-    this.setState({ query: formattedQuery, items });
+    this.setState({ query: text });
   };
   render() {
     const HEADER_HEIGHT = 70;
@@ -109,11 +59,7 @@ class ListScreen extends Component {
         action: () => firebase.auth().signOut(),
       },
     ];
-    // styles.searchContainer,
 
-    // const isDataEmpty = this.props.items.length > 0 ? false : true;
-    // Object.keys(this.props.items).length === 0;
-    // console.log("DO WE HAVE AN EMPTY", this.props.items);
     return (
       <View style={styles.container}>
         <Animated.View
@@ -141,9 +87,9 @@ class ListScreen extends Component {
         </Animated.View>
 
         {/* if list is not empty */}
-        {!_.isEmpty(this.props.items) ? (
+        {!_.isEmpty(this.props.fullItems) ? (
           <FlatList
-            ListEmptyComponent="empty"
+            ListEmptyComponent={<NoItemsAssociated data={this.state.query} />}
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
             bounces={false}
@@ -166,22 +112,6 @@ class ListScreen extends Component {
         )}
 
         {this.props.noData && !this.props.loading && <NoDataComponent />}
-
-        {/* {!this.props.items && <NoDataComponent />} */}
-        {/* <EachItem data={item.item} /> */}
-        {/* <AppButton
-          style={{ height: 200, width: 200 }}
-          onPress={() => this.props.addItem({ uid: this.props.uid, item: {} })}
-        />
-        <AppButton
-          style={{ height: 200, width: 200, backgroundColor: "green" }}
-          onPress={() =>
-            this.props.getAllItems({
-              type: "GET_ALL_ITEMS",
-              uid: this.props.uid,
-            })
-          }
-        /> */}
 
         <AddItemModal
           visible={this.state.addItemModalVisible}
@@ -223,6 +153,7 @@ const mapStateToProps = (state) => {
     uid: state.uid,
     loading: state.loading,
     noData: state.noData,
+    fullItems: state.fullItems,
   };
 };
 
@@ -239,6 +170,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addItem: (payload) => {
       dispatch(addItem(payload));
+    },
+    search: (payload) => {
+      dispatch(search(payload));
     },
   };
 };
