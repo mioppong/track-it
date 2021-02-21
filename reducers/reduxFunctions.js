@@ -8,6 +8,24 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+export const search = (payload) => {
+  return function (dispatch) {
+    const { query, items } = payload;
+
+    const filteredData = _.filter(items, (item) => {
+      if (
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query)
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    dispatch({ type: types.SEARCHING, data: filteredData });
+  };
+};
+
 export const getAllItems = (payload) => {
   const { uid } = payload;
   return async function (dispatch) {

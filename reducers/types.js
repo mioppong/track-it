@@ -18,6 +18,8 @@ const types = {
   ADD_ITEM_SUCCESS: "ADD_ITEM_SUCCESS",
 
   NO_DATA_AVAILABLE: "NO_DATA_AVAILABLE",
+
+  SEARCHING: "SEARCHING",
 };
 
 export default types;

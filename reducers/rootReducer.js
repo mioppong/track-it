@@ -4,6 +4,7 @@ import types from "./types";
 export const initState = {
   uid: "",
   items: [],
+  fullItems: [],
   noData: true,
   loading: false,
 };
@@ -28,8 +29,8 @@ const rootReducer = (state = initState, action) => {
     case types.GET_ALL_ITEMS_SUCCESS:
       newState.loading = false;
       newState.noData = false;
-
       newState.items = action.data;
+      newState.fullItems = action.data;
       return newState;
 
     case types.ADD_ITEM_START:
@@ -44,6 +45,10 @@ const rootReducer = (state = initState, action) => {
       return newState;
     case types.UPDATE_ITEM_SUCCESS:
       newState.loading = false;
+      return newState;
+
+    case types.SEARCHING:
+      newState.items = action.data;
       return newState;
 
     case types.NO_DATA_AVAILABLE:
