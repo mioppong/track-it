@@ -92,7 +92,8 @@ class ListScreen extends Component {
             ListEmptyComponent={<NoItemsAssociated data={this.state.query} />}
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
-            bounces={false}
+            showsVerticalScrollIndicator={false}
+            bounces={true}
             contentContainerStyle={{
               paddingBottom: 20,
               paddingTop: HEADER_HEIGHT,

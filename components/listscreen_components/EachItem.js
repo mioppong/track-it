@@ -63,12 +63,12 @@ function EachItem({ data, deleteItem, uid, getAllItems }) {
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
-                  height: 6,
+                  height: 2,
                 },
-                shadowOpacity: 0.37,
-                shadowRadius: 7.49,
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
 
-                elevation: 12,
+                elevation: 4,
               }}
             >
               <Text style={styles.descriptionStyle}>{data.description}</Text>
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 2,
     },
-    shadowOpacity: 0.37,
-    shadowRadius: 7.49,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
 
-    elevation: 12,
+    elevation: 4,
   },
   descriptionStyle: {
     padding: "1%",
@@ -144,12 +144,12 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 2,
     },
-    shadowOpacity: 0.37,
-    shadowRadius: 7.49,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
 
-    elevation: 12,
+    elevation: 4,
   },
   titleStyle: {
     fontSize: 20,
