@@ -87,9 +87,13 @@ class ListScreen extends Component {
         </Animated.View>
 
         {/* if list is not empty */}
-        {!_.isEmpty(this.props.fullItems) ? (
+        {!this.props.noData ? (
           <FlatList
-            ListEmptyComponent={<NoItemsAssociated data={this.state.query} />}
+            ListEmptyComponent={
+              this.props.noData ? null : (
+                <NoItemsAssociated data={this.state.query} />
+              )
+            }
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
             bounces={true}
