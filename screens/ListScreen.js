@@ -40,7 +40,7 @@ class ListScreen extends Component {
     const diffClamp = Animated.diffClamp(scrollY, 0, HEADER_HEIGHT);
     const headerY = Animated.interpolate(diffClamp, {
       inputRange: [0, HEADER_HEIGHT - 20],
-      outputRange: [0, -HEADER_HEIGHT],
+      outputRange: [0, -HEADER_HEIGHT - 60],
     });
     const buttons = [
       {
@@ -92,15 +92,15 @@ class ListScreen extends Component {
             ListEmptyComponent={<NoItemsAssociated data={this.state.query} />}
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
-            showsVerticalScrollIndicator={false}
             bounces={true}
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               paddingBottom: 20,
               paddingTop: HEADER_HEIGHT,
             }}
             key={(item) => item.key + "bow"}
             style={styles.listStyles}
-            data={this.props.items}
+            data={this.props.items.reverse()}
             onScroll={(e) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
