@@ -45,7 +45,11 @@ export const getAllItems = (payload) => {
       });
       const items = Object.values(myData);
 
-      dispatch({ type: types.GET_ALL_ITEMS_SUCCESS, data: items });
+      dispatch({
+        type: types.GET_ALL_ITEMS_SUCCESS,
+        data: items,
+        totalItems: items.length,
+      });
     } else {
       dispatch({ type: types.NO_DATA_AVAILABLE });
     }

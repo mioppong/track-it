@@ -5,6 +5,7 @@ export const initState = {
   uid: "",
   items: [],
   fullItems: [],
+  totalItems: 0,
   noData: true,
   loading: false,
 };
@@ -31,6 +32,7 @@ const rootReducer = (state = initState, action) => {
       newState.noData = false;
       newState.items = action.data;
       newState.fullItems = action.data;
+      newState.totalItems = action.totalItems;
       return newState;
 
     case types.ADD_ITEM_START:
@@ -55,6 +57,7 @@ const rootReducer = (state = initState, action) => {
       newState.items = [];
       newState.loading = false;
       newState.noData = true;
+      newState.totalItems = 0;
       return newState;
   }
 

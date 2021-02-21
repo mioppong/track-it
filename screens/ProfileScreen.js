@@ -12,8 +12,9 @@ import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
-export default class ProfileScreen extends Component {
+class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -43,6 +44,8 @@ export default class ProfileScreen extends Component {
               }}
             />
           </View>
+
+          <Text>{this.props.totalItems}</Text>
           <View
             style={{
               padding: "1%",
@@ -65,6 +68,17 @@ export default class ProfileScreen extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    uid: state.uid,
+    loading: state.loading,
+    noData: state.noData,
+    totalItems: state.totalItems,
+  };
+};
+export default connect(mapStateToProps, null)(ProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
