@@ -14,10 +14,14 @@ import AddItemModal from "../components/listscreen_components/AddItemModal";
 import { addItem, getAllItems, search } from "../reducers/reduxFunctions";
 import LoadingComponent from "../components/LoadingComponent";
 import NoItemsAssociated from "../components/listscreen_components/NoItemsAssociated";
+import Toast from "react-native-fast-toast";
+import Icon from "../components/Icon";
 
 class ListScreen extends Component {
   constructor(props) {
     super(props);
+    this.toast = React.createRef();
+
     this.state = {
       query: "",
       loading: false,
@@ -34,6 +38,21 @@ class ListScreen extends Component {
 
     this.setState({ query: text });
   };
+
+  showToast = () => {
+    this.toast.current.show("Sorry you reached your limit", {
+      icon: (
+        <Icon
+          size={100}
+          iconColor={colors.primary}
+          name="emoticon-sad-outline"
+        />
+      ),
+      duration: 2000,
+      style: { padding: 0, backgroundColor: colors.fourth, borderRadius: 15 },
+      textStyle: { fontSize: 20 },
+    });
+  };
   render() {
     const HEADER_HEIGHT = 70;
     const scrollY = new Animated.Value(0);
@@ -47,8 +66,12 @@ class ListScreen extends Component {
         color: colors.lightGray,
         content: <Ionicons name="ios-add" size={40} color={colors.primary} />,
         action: () => {
-          // this.addItem();
-          this.setState({ addItemModalVisible: true });
+          if (this.props.totalItems < this.props.maxItems) {
+            this.setState({ addItemModalVisible: true });
+          } else {
+            this.showToast();
+            console.log("too many stuff");
+          }
         },
       },
 
@@ -85,7 +108,6 @@ class ListScreen extends Component {
             onChangeText={(text) => this.handleSearch(text)}
           />
         </Animated.View>
-
         {/* if list is not empty */}
         {!this.props.noData ? (
           <FlatList
@@ -111,16 +133,19 @@ class ListScreen extends Component {
             renderItem={(item) => <EachItem data={item.item} />}
           />
         ) : null}
-
         {_.isEmpty(this.props.items) && this.props.loading && (
           <LoadingComponent />
         )}
-
         {this.props.noData && !this.props.loading && <NoDataComponent />}
-
         <AddItemModal
           visible={this.state.addItemModalVisible}
           closeModal={() => this.setState({ addItemModalVisible: false })}
+        />
+        <Toast
+          textStyle={{ fontWeight: "bold" }}
+          offset={100}
+          placement="top"
+          ref={this.toast}
         />
 
         {/* {isDataEmpty && <NoDataComponent />} */}
@@ -159,6 +184,8 @@ const mapStateToProps = (state) => {
     loading: state.loading,
     noData: state.noData,
     fullItems: state.fullItems,
+    totalItems: state.totalItems,
+    maxItems: state.maxItems,
   };
 };
 
