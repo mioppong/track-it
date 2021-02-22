@@ -27,42 +27,29 @@ class ProfileScreen extends Component {
       <Screen style={styles.container}>
         <Image
           source={require("../assets/magnifying-glass.png")}
-          style={{
-            height: 40,
-            width: 40,
-            alignSelf: "center",
-            marginVertical: "1%",
-          }}
+          style={styles.logo}
         />
-        <ScrollView>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={{
-                uri:
-                  "https://i.pinimg.com/originals/c1/58/84/c15884bfc3bf844b8345c5d0181d5f0a.gif",
-              }}
-            />
+        <ScrollView style={{ padding: 10 }}>
+          <View style={{ flexDirection: "row", marginTop: "5%", width: "90%" }}>
+            <Text style={styles.text}>NUM OF ITEMS YOU HAVE: </Text>
+            <Text style={styles.totalItems}>{this.props.totalItems}</Text>
           </View>
 
-          <Text>{this.props.totalItems}</Text>
-          <View
-            style={{
-              padding: "1%",
-              marginVertical: 10,
-              flexDirection: "row",
-              // backgroundColor: "red",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text style={{ fontWeight: "bold" }}>Dark Mode Switch</Text>
-            <Switch onValueChange={this.toggleSwitch} value={true} />
+          <View style={{ flexDirection: "row", marginTop: "5%", width: "90%" }}>
+            <Text style={styles.text}>NUM OF ITEMS YOU CAN HAVE IS: </Text>
+            <Text style={styles.totalItems}>{this.props.maxItems}</Text>
           </View>
+
           <AppButton
             iconName="logout"
+            style={{
+              flexDirection: "row",
+              alignSelf: "center",
+              marginTop: "20%",
+            }}
             onPress={() => firebase.auth().signOut()}
           />
+          <Text style={styles.logoutText}>LOGOUT</Text>
         </ScrollView>
       </Screen>
     );
@@ -76,6 +63,7 @@ const mapStateToProps = (state) => {
     loading: state.loading,
     noData: state.noData,
     totalItems: state.totalItems,
+    maxItems: state.maxItems,
   };
 };
 export default connect(mapStateToProps, null)(ProfileScreen);
@@ -85,6 +73,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.eights,
   },
+  logo: {
+    height: 40,
+    width: 40,
+    alignSelf: "center",
+    marginVertical: "1%",
+  },
+
   image: {
     height: "100%",
     width: "100%",
@@ -98,9 +93,26 @@ const styles = StyleSheet.create({
     // backgroundColor: "red",
     marginLeft: "1%",
   },
+  totalItems: {
+    color: colors.primary,
+    fontWeight: "bold",
+    fontSize: 20,
+    marginLeft: "5%",
+  },
   lowerSectionContainer: {
     // backgroundColor: "blue",
     height: "100%",
     margin: "1%",
+  },
+
+  logoutText: {
+    marginTop: "4%",
+    alignSelf: "center",
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  text: {
+    fontWeight: "bold",
+    fontSize: 20,
   },
 });
