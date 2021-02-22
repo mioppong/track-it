@@ -20,7 +20,7 @@ function EachItem({ data, deleteItem, uid, getAllItems }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleDelete = () => {
-    deleteItem({ uid, key: data.key });
+    deleteItem({ uid, key: data.key, data });
     getAllItems({ uid });
   };
   const leftSwipe = () => {

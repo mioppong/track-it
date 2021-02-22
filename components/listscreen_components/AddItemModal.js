@@ -34,7 +34,7 @@ function AddItemModal({
   const [cameraModalVisible, setCameraModalVisible] = useState(false);
   const [actualCameraVisible, setActualCameraVisible] = useState(false);
   const [image, setImage] = useState(
-    "https://firebasestorage.googleapis.com/v0/b/tracker-3e334.appspot.com/o/images%2Fblank.png?alt=media&token=3efec7da-c0fa-440b-8885-afee478d3322"
+    "https://firebasestorage.googleapis.com/v0/b/tracker-3e334.appspot.com/o/images%2Fblank.png?alt=media&token=fb53b3b3-4244-4758-996c-c9b89422a243"
   );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

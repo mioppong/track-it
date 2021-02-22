@@ -85,8 +85,13 @@ export const deleteItem = (payload) => {
   return async function (dispatch) {
     dispatch({ type: types.DELETE_ITEM_START });
     console.log("payload is", payload);
-    const { uid, key } = payload;
-    const del = firebase
+    const { uid, key, data } = payload;
+
+    const refFromStorage = firebase.storage().refFromURL(data.image);
+
+    refFromStorage.delete().catch(() => console.log("err"));
+
+    firebase
       .database()
       .ref("/users/")
       .child(uid)
