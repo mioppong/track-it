@@ -5,6 +5,7 @@ export const initState = {
   uid: "",
   items: [],
   fullItems: [],
+  maxItems: 100,
   totalItems: 0,
   noData: true,
   loading: false,
