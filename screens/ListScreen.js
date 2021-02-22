@@ -77,9 +77,9 @@ class ListScreen extends Component {
 
       {
         color: colors.white,
-        content: <AntDesign name="logout" size={24} color={colors.primary} />,
+        content: <AntDesign name="reload1" size={24} color={colors.primary} />,
 
-        action: () => firebase.auth().signOut(),
+        action: () => this.props.getAllItems({ uid: this.props.uid }),
       },
     ];
 
@@ -108,6 +108,7 @@ class ListScreen extends Component {
             onChangeText={(text) => this.handleSearch(text)}
           />
         </Animated.View>
+
         {/* if list is not empty */}
         {!this.props.noData ? (
           <FlatList
