@@ -119,7 +119,7 @@ class ListScreen extends Component {
             }
             scrollEventThrottle={10}
             alwaysBounceVertical={false}
-            bounces={true}
+            bounces={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               paddingBottom: 20,
@@ -153,7 +153,7 @@ class ListScreen extends Component {
         <View style={styles.buttonContainer}>
           <AnimatedAbsoluteButton
             buttonSize={50}
-            buttonColor="indigo"
+            buttonColor={colors.primary}
             buttonShape="circular"
             buttonContent={
               <Image
