@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import Swipeout from "react-native-swipeout";
 import { connect } from "react-redux";
 import colors from "../../config/colors";
 import { deleteItem, getAllItems } from "../../reducers/reduxFunctions";
@@ -40,8 +39,8 @@ function EachItem({ data, deleteItem, uid, getAllItems }) {
           <View style={{ flexDirection: "row" }}>
             <Image
               style={{
-                width: 260,
-                height: 200,
+                width: "100%",
+                height: "100%",
                 borderRadius: 20,
                 flex: 1,
                 margin: "2%",

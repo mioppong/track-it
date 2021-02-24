@@ -1,15 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Plane } from "react-native-animated-spinkit";
 import colors from "../config/colors";
 import firebase from "firebase";
 import { firebaseConfig } from "../config";
 import { connect } from "react-redux";
-import {
-  getAllItemsFirestore,
-  newUser,
-  getAllItems,
-} from "../reducers/reduxFunctions";
+import { newUser, getAllItems } from "../reducers/reduxFunctions";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);

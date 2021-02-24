@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Button } from "react-native";
+import { Text, StyleSheet, View, Image } from "react-native";
 import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -7,6 +7,7 @@ import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
 import { apiKeys } from "../config2";
 import { connect } from "react-redux";
+import Icon from "../components/Icon";
 
 class WelcomeScreen extends Component {
   constructor(props) {
@@ -101,8 +102,25 @@ class WelcomeScreen extends Component {
     return (
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
-          <Text> fourth ITERATION </Text>
-          <AppButton onPress={this.signInWithGoogleAsync} />
+          <Image
+            source={require("../assets/logo.png")}
+            style={{ width: 100, height: 100 }}
+          />
+        </View>
+
+        <View style={styles.bottomContainer}>
+          <Text style={styles.mainText}> Sign in here </Text>
+          <View style={{ alignSelf: "center" }}>
+            <Icon name="arrow-down" size={75} />
+          </View>
+
+          <AppButton
+            style={{ width: 60, height: 60, alignSelf: "center" }}
+            iconSize={60}
+            iconName="google"
+            onPress={this.signInWithGoogleAsync}
+          />
+          <Text style={styles.secondText}> To start tracking your items </Text>
         </View>
       </Screen>
     );
@@ -129,9 +147,24 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
 
 const styles = StyleSheet.create({
+  bottomContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.eights,
+  },
+  mainText: {
+    alignSelf: "center",
+    fontWeight: "bold",
+    fontSize: 40,
+    color: colors.darkGray,
+  },
+  secondText: {
+    marginTop: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 18,
   },
   topContainer: {
     marginTop: "20%",
@@ -140,8 +173,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 200,
 
-    backgroundColor: colors.fifth,
     alignSelf: "center",
     padding: 10,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
 });

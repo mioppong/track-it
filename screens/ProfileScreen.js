@@ -1,13 +1,5 @@
-import { firestore } from "firebase";
 import React, { Component } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  Image,
-  Switch,
-} from "react-native";
+import { Text, StyleSheet, View, ScrollView, Image } from "react-native";
 import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
