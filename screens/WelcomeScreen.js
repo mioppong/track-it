@@ -102,6 +102,7 @@ class WelcomeScreen extends Component {
     return (
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
+          <Text style={styles.mainText}>Track it</Text>
           <Image
             source={require("../assets/logo.png")}
             style={{ width: 100, height: 100 }}
@@ -109,7 +110,7 @@ class WelcomeScreen extends Component {
         </View>
 
         <View style={styles.bottomContainer}>
-          <Text style={styles.mainText}> Sign in here </Text>
+          <Text style={styles.secondText}> Sign in here </Text>
           <View style={{ alignSelf: "center" }}>
             <Icon name="arrow-down" size={75} />
           </View>
@@ -121,6 +122,18 @@ class WelcomeScreen extends Component {
             onPress={this.signInWithGoogleAsync}
           />
           <Text style={styles.secondText}> To start tracking your items </Text>
+          <Image
+            source={{
+              uri:
+                "https://media.tenor.com/images/b826b25547995a6f76d0b491165a3915/tenor.gif",
+            }}
+            style={{
+              width: 150,
+              height: 220,
+              alignSelf: "center",
+              marginTop: "5%",
+            }}
+          />
         </View>
       </Screen>
     );
@@ -164,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 20,
   },
   topContainer: {
     marginTop: "20%",
