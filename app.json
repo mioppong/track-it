@@ -1,35 +1,37 @@
 {
-    "expo": {
-        "name": "track-it",
-        "slug": "track-it",
-        "version": "3.0.0",
-        "orientation": "portrait",
-        "icon": "./assets/icon.png",
-        "splash": {
-            "image": "./assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#000000"
-        },
-        "updates": {
-            "fallbackToCacheTimeout": 0
-        },
-        "assetBundlePatterns": ["**/*"],
-        "ios": {
-            "buildNumber": "3",
-            "supportsTablet": false,
-            "bundleIdentifier": "com.oppongstudios.trackit"
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#FFFFFF"
-            },
-            "versionCode": 3,
-            "package": "com.oppongstudios.trackit"
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
-        },
-        "description": ""
-    }
+  "expo": {
+    "name": "track-it",
+    "slug": "track-it",
+    "version": "3.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "buildNumber": "3",
+      "supportsTablet": false,
+      "bundleIdentifier": "com.oppongstudios.trackit"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "versionCode": 3,
+      "package": "com.oppongstudios.trackit"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": ""
+  }
 }

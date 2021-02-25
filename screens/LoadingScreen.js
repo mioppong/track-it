@@ -43,6 +43,7 @@ class LoadingScreen extends Component {
   }
 
   render() {
+    console.log("EMAIL PASSWORD IS", process.env.email_pss);
     return (
       <View
         style={{
