@@ -9,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import uuid from "uuid/dist/v1";
 import colors from "../../config/colors";
 import AppButton from "../AppButton";
 import Icon from "../Icon";
@@ -17,7 +16,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import PickerItem from "./PickerItem";
 import firebase from "firebase";
 import "react-native-get-random-values";
-//
+
 import { nanoid } from "nanoid";
 import { connect } from "react-redux";
 

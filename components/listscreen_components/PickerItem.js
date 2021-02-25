@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
 import colors from "../../config/colors";
 import AppButton from "../AppButton";
 import * as ImagePicker from "expo-image-picker";

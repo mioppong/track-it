@@ -5,14 +5,43 @@ import Screen from "../components/Screen";
 import colors from "../config/colors";
 import firebase from "firebase";
 import { connect } from "react-redux";
+import FeedbackModal from "../components/profilescreen_components/FeedbackModal";
+import Toast from "react-native-fast-toast";
+import Icon from "../components/Icon";
 
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      feedbackModal: false,
+    };
+    this.toast = React.createRef();
   }
 
   toggleSwitch = () => {};
+
+  handleFeedbackModal = (boolean, success = false) => {
+    this.setState({ feedbackModal: boolean });
+
+    if (success) {
+      this.showToast();
+    }
+  };
+
+  showToast = () => {
+    this.toast.current.show("Thank  you for your feedback", {
+      icon: (
+        <Icon
+          size={100}
+          iconColor={colors.primary}
+          name="emoticon-happy-outline"
+        />
+      ),
+      duration: 2000,
+      style: { padding: 0, backgroundColor: colors.fourth, borderRadius: 15 },
+      textStyle: { fontSize: 20 },
+    });
+  };
 
   render() {
     return (
@@ -32,6 +61,31 @@ class ProfileScreen extends Component {
             <Text style={styles.totalItems}>{this.props.maxItems}</Text>
           </View>
 
+          <AppButton
+            title="Send feeback"
+            textStyle={{ fontWeight: "bold", color: colors.primary }}
+            style={{
+              marginTop: "5%",
+              width: 100,
+              height: 75,
+              alignSelf: "center",
+              backgroundColor: colors.fifth,
+              borderRadius: 20,
+            }}
+            onPress={() => this.handleFeedbackModal(true)}
+          />
+
+          <FeedbackModal
+            closeModal={(success) => this.handleFeedbackModal(false, success)}
+            visible={this.state.feedbackModal}
+          />
+
+          <Toast
+            textStyle={{ fontWeight: "bold" }}
+            offset={100}
+            placement="top"
+            ref={this.toast}
+          />
           <AppButton
             iconName="logout"
             style={{
