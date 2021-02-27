@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { AnimatedAbsoluteButton } from "react-native-animated-absolute-buttons";
-import { StyleSheet, View, FlatList, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TextInput,
+  Image,
+  Modal,
+} from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
 import firebase from "firebase";
@@ -16,6 +23,8 @@ import LoadingComponent from "../components/LoadingComponent";
 import NoItemsAssociated from "../components/listscreen_components/NoItemsAssociated";
 import Toast from "react-native-fast-toast";
 import Icon from "../components/Icon";
+import AppButton from "../components/AppButton";
+import { Dimensions } from "react-native";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -23,10 +32,14 @@ class ListScreen extends Component {
     this.toast = React.createRef();
 
     this.state = {
+      height: "80%",
+      width: "90%",
       query: "",
       loading: false,
       items: this.props.items,
       addItemModalVisible: false,
+      fullImage: false,
+      image: "https://media.giphy.com/media/XgNMyzUVfqWaCFl7UO/giphy.gif",
     };
   }
 
@@ -53,6 +66,10 @@ class ListScreen extends Component {
       textStyle: { fontSize: 20 },
     });
   };
+
+  showImageFullScreen = (height, width, image) => {
+    this.setState({ fullImage: true, image });
+  };
   render() {
     const HEADER_HEIGHT = 70;
     const scrollY = new Animated.Value(0);
@@ -66,6 +83,7 @@ class ListScreen extends Component {
         color: colors.lightGray,
         content: <Ionicons name="ios-add" size={40} color={colors.primary} />,
         action: () => {
+          //if they reached their max items
           if (this.props.totalItems < this.props.maxItems) {
             this.setState({ addItemModalVisible: true });
           } else {
@@ -82,6 +100,13 @@ class ListScreen extends Component {
         action: () => this.props.getAllItems({ uid: this.props.uid }),
       },
     ];
+
+    // console.log(
+    //   Image.getSize(this.state.image, (width, height) =>
+    //     console.log("height is", height, width)
+    //   )
+    // );
+    // const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
     return (
       <View style={styles.container}>
@@ -131,7 +156,16 @@ class ListScreen extends Component {
             onScroll={(e) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
-            renderItem={(item) => <EachItem data={item.item} />}
+            renderItem={(item) => (
+              <EachItem
+                data={item.item}
+                showFullImage={
+                  (height, width, image) =>
+                    this.showImageFullScreen(height, width, image)
+                  // this.setState({ height, width, fullImage: true })
+                }
+              />
+            )}
           />
         ) : null}
         {_.isEmpty(this.props.items) && this.props.loading && (
@@ -148,6 +182,31 @@ class ListScreen extends Component {
           placement="top"
           ref={this.toast}
         />
+
+        <Modal
+          animationType="fade"
+          presentationStyle="fullScreen"
+          visible={this.state.fullImage}
+        >
+          <View style={styles.fullcontainer}>
+            <AppButton
+              iconName="close"
+              iconColor="red"
+              style={{ marginBottom: 10, alignSelf: "flex-end" }}
+              onPress={() => this.setState({ fullImage: false })}
+            />
+
+            <Image
+              source={{ uri: this.state.image }}
+              style={{
+                borderRadius: 50,
+                height: this.state.height,
+                width: this.state.width,
+                resizeMode: "contain",
+              }}
+            />
+          </View>
+        </Modal>
 
         {/* {isDataEmpty && <NoDataComponent />} */}
         <View style={styles.buttonContainer}>
@@ -221,6 +280,7 @@ const styles = StyleSheet.create({
     left: "90%",
     position: "absolute",
   },
+
   container: {
     backgroundColor: colors.eights,
     flex: 1,
@@ -235,6 +295,12 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray",
   },
 
+  fullcontainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.eights,
+  },
   searchButtonStyle: { marginHorizontal: 10, marginTop: 0 },
   addItemButtomStyles: {
     fontSize: 40,
