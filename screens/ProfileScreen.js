@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import FeedbackModal from "../components/profilescreen_components/FeedbackModal";
 import Toast from "react-native-fast-toast";
 import Icon from "../components/Icon";
+import AdComponent from "../components/AdComponent";
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -96,6 +97,7 @@ class ProfileScreen extends Component {
             onPress={() => firebase.auth().signOut()}
           />
           <Text style={styles.logoutText}>LOGOUT</Text>
+          <AdComponent />
         </ScrollView>
       </Screen>
     );
