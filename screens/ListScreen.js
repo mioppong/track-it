@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
-import firebase from "firebase";
 import Animated from "react-native-reanimated";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,7 +23,8 @@ import NoItemsAssociated from "../components/listscreen_components/NoItemsAssoci
 import Toast from "react-native-fast-toast";
 import Icon from "../components/Icon";
 import AppButton from "../components/AppButton";
-import { Dimensions } from "react-native";
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -51,6 +51,20 @@ class ListScreen extends Component {
 
     this.setState({ query: text });
   };
+  showToastSaved = () => {
+    this.toast.current.show("Image Saved", {
+      icon: (
+        <Icon
+          size={100}
+          iconColor={colors.primary}
+          name="emoticon-happy-outline"
+        />
+      ),
+      duration: 2000,
+      style: { padding: 0, backgroundColor: colors.fourth, borderRadius: 15 },
+      textStyle: { fontSize: 20 },
+    });
+  };
 
   showToast = () => {
     this.toast.current.show("Sorry you reached your limit", {
@@ -67,8 +81,46 @@ class ListScreen extends Component {
     });
   };
 
+  saveImage = async (image) => {
+    const { granted } = await MediaLibrary.getPermissionsAsync();
+    if (granted) {
+      this.showToast();
+
+      await MediaLibrary.saveToLibraryAsync(image).catch((error) =>
+        console.log("error is", error)
+      );
+    } else {
+      console.log("you need to enable permision");
+    }
+  };
+
+  handleDownload = (image) => {
+    this.showToastSaved();
+    const uri = image;
+    let fileUri = FileSystem.documentDirectory + "image.jpg";
+
+    FileSystem.downloadAsync(uri, fileUri)
+      .then(({ uri }) => {
+        this.saveImage(uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   showImageFullScreen = (height, width, image) => {
     this.setState({ fullImage: true, image });
+  };
+  saveImage = async (image) => {
+    const { granted } = await MediaLibrary.getPermissionsAsync();
+    if (granted) {
+      console.log("crodiee", image);
+
+      await MediaLibrary.saveToLibraryAsync(image);
+    } else {
+      //
+      console.log("you need to enable permision");
+    }
   };
   render() {
     const HEADER_HEIGHT = 70;
@@ -159,6 +211,7 @@ class ListScreen extends Component {
             renderItem={(item) => (
               <EachItem
                 data={item.item}
+                saveImage={(image) => this.handleDownload(image)}
                 showFullImage={
                   (height, width, image) =>
                     this.showImageFullScreen(height, width, image)
@@ -299,7 +352,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.eights,
+    backgroundColor: colors.darkGray,
   },
   searchButtonStyle: { marginHorizontal: 10, marginTop: 0 },
   addItemButtomStyles: {

@@ -15,8 +15,20 @@ import colors from "../../config/colors";
 import { deleteItem, getAllItems } from "../../reducers/reduxFunctions";
 import AppButton from "../AppButton";
 import EditItemModal from "./EditItemModal";
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
+import { useRef } from "react";
+import Toast from "react-native-toast-message";
+import Icon from "../Icon";
 
-function EachItem({ data, deleteItem, uid, getAllItems, showFullImage }) {
+function EachItem({
+  data,
+  deleteItem,
+  uid,
+  getAllItems,
+  showFullImage,
+  saveImage,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -27,7 +39,7 @@ function EachItem({ data, deleteItem, uid, getAllItems, showFullImage }) {
   };
 
   const handleDownload = () => {
-    console.log("download Image modal");
+    saveImage(data.image);
   };
 
   const handleShow = () => {

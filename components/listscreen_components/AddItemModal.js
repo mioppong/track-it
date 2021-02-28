@@ -59,6 +59,7 @@ function AddItemModal({
       .put(blob)
       .then((snapshot) => {
         return ref.getDownloadURL().then((url) => {
+          console.log("snapshot is", snapshot);
           const payload = { image: url, title, description };
           addItemDispatch({ uid: uid, item: payload });
           getAllItems({ uid });
