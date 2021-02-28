@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { AnimatedAbsoluteButton } from "react-native-animated-absolute-buttons";
-import { StyleSheet, View, FlatList, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TextInput,
+  Image,
+  Modal,
+} from "react-native";
 import EachItem from "../components/listscreen_components/EachItem";
 import colors from "../config/colors";
-import firebase from "firebase";
 import Animated from "react-native-reanimated";
 import { connect } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +22,9 @@ import LoadingComponent from "../components/LoadingComponent";
 import NoItemsAssociated from "../components/listscreen_components/NoItemsAssociated";
 import Toast from "react-native-fast-toast";
 import Icon from "../components/Icon";
+import AppButton from "../components/AppButton";
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
 
 class ListScreen extends Component {
   constructor(props) {
@@ -23,10 +32,14 @@ class ListScreen extends Component {
     this.toast = React.createRef();
 
     this.state = {
+      height: "80%",
+      width: "90%",
       query: "",
       loading: false,
       items: this.props.items,
       addItemModalVisible: false,
+      fullImage: false,
+      image: "https://media.giphy.com/media/XgNMyzUVfqWaCFl7UO/giphy.gif",
     };
   }
 
@@ -37,6 +50,20 @@ class ListScreen extends Component {
     });
 
     this.setState({ query: text });
+  };
+  showToastSaved = () => {
+    this.toast.current.show("Image Saved", {
+      icon: (
+        <Icon
+          size={100}
+          iconColor={colors.primary}
+          name="emoticon-happy-outline"
+        />
+      ),
+      duration: 2000,
+      style: { padding: 0, backgroundColor: colors.fourth, borderRadius: 15 },
+      textStyle: { fontSize: 20 },
+    });
   };
 
   showToast = () => {
@@ -53,6 +80,48 @@ class ListScreen extends Component {
       textStyle: { fontSize: 20 },
     });
   };
+
+  saveImage = async (image) => {
+    const { granted } = await MediaLibrary.getPermissionsAsync();
+    if (granted) {
+      this.showToast();
+
+      await MediaLibrary.saveToLibraryAsync(image).catch((error) =>
+        console.log("error is", error)
+      );
+    } else {
+      console.log("you need to enable permision");
+    }
+  };
+
+  handleDownload = (image) => {
+    this.showToastSaved();
+    const uri = image;
+    let fileUri = FileSystem.documentDirectory + "image.jpg";
+
+    FileSystem.downloadAsync(uri, fileUri)
+      .then(({ uri }) => {
+        this.saveImage(uri);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  showImageFullScreen = (height, width, image) => {
+    this.setState({ fullImage: true, image });
+  };
+  saveImage = async (image) => {
+    const { granted } = await MediaLibrary.getPermissionsAsync();
+    if (granted) {
+      console.log("crodiee", image);
+
+      await MediaLibrary.saveToLibraryAsync(image);
+    } else {
+      //
+      console.log("you need to enable permision");
+    }
+  };
   render() {
     const HEADER_HEIGHT = 70;
     const scrollY = new Animated.Value(0);
@@ -66,6 +135,7 @@ class ListScreen extends Component {
         color: colors.lightGray,
         content: <Ionicons name="ios-add" size={40} color={colors.primary} />,
         action: () => {
+          //if they reached their max items
           if (this.props.totalItems < this.props.maxItems) {
             this.setState({ addItemModalVisible: true });
           } else {
@@ -82,6 +152,13 @@ class ListScreen extends Component {
         action: () => this.props.getAllItems({ uid: this.props.uid }),
       },
     ];
+
+    // console.log(
+    //   Image.getSize(this.state.image, (width, height) =>
+    //     console.log("height is", height, width)
+    //   )
+    // );
+    // const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
     return (
       <View style={styles.container}>
@@ -131,7 +208,17 @@ class ListScreen extends Component {
             onScroll={(e) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
-            renderItem={(item) => <EachItem data={item.item} />}
+            renderItem={(item) => (
+              <EachItem
+                data={item.item}
+                saveImage={(image) => this.handleDownload(image)}
+                showFullImage={
+                  (height, width, image) =>
+                    this.showImageFullScreen(height, width, image)
+                  // this.setState({ height, width, fullImage: true })
+                }
+              />
+            )}
           />
         ) : null}
         {_.isEmpty(this.props.items) && this.props.loading && (
@@ -148,6 +235,31 @@ class ListScreen extends Component {
           placement="top"
           ref={this.toast}
         />
+
+        <Modal
+          animationType="fade"
+          presentationStyle="fullScreen"
+          visible={this.state.fullImage}
+        >
+          <View style={styles.fullcontainer}>
+            <AppButton
+              iconName="close"
+              iconColor="red"
+              style={{ marginBottom: 10, alignSelf: "flex-end" }}
+              onPress={() => this.setState({ fullImage: false })}
+            />
+
+            <Image
+              source={{ uri: this.state.image }}
+              style={{
+                borderRadius: 50,
+                height: this.state.height,
+                width: this.state.width,
+                resizeMode: "contain",
+              }}
+            />
+          </View>
+        </Modal>
 
         {/* {isDataEmpty && <NoDataComponent />} */}
         <View style={styles.buttonContainer}>
@@ -221,6 +333,7 @@ const styles = StyleSheet.create({
     left: "90%",
     position: "absolute",
   },
+
   container: {
     backgroundColor: colors.eights,
     flex: 1,
@@ -235,6 +348,12 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray",
   },
 
+  fullcontainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.darkGray,
+  },
   searchButtonStyle: { marginHorizontal: 10, marginTop: 0 },
   addItemButtomStyles: {
     fontSize: 40,

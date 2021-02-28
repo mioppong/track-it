@@ -5,23 +5,57 @@ import {
   Text,
   View,
   Image,
-  TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
+import { Dimensions } from "react-native";
+
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { connect } from "react-redux";
 import colors from "../../config/colors";
 import { deleteItem, getAllItems } from "../../reducers/reduxFunctions";
 import AppButton from "../AppButton";
 import EditItemModal from "./EditItemModal";
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
+import { useRef } from "react";
+import Toast from "react-native-toast-message";
+import Icon from "../Icon";
 
-function EachItem({ data, deleteItem, uid, getAllItems }) {
+function EachItem({
+  data,
+  deleteItem,
+  uid,
+  getAllItems,
+  showFullImage,
+  saveImage,
+}) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const handleDelete = () => {
     deleteItem({ uid, key: data.key, data });
     getAllItems({ uid });
   };
+
+  const handleDownload = () => {
+    saveImage(data.image);
+  };
+
+  const handleShow = () => {
+    Image.getSize(data.image, (widths, heights) => {
+      setHeight(heights);
+      setWidth(widths);
+    });
+    const maxHeight = Dimensions.get("window").height; // or something else
+    const maxWidth = Dimensions.get("window").width;
+
+    const ratio = Math.min(maxWidth / width, maxHeight / height);
+
+    showFullImage(width * ratio, height * ratio, data.image);
+    // setImageModal(true);
+  };
+
   const leftSwipe = () => {
     return (
       <AppButton
@@ -32,8 +66,26 @@ function EachItem({ data, deleteItem, uid, getAllItems }) {
     );
   };
 
+  const rightSwipe = () => {
+    return (
+      <>
+        <AppButton
+          iconName="eye"
+          style={{ alignSelf: "center", marginHorizontal: 15 }}
+          onPress={() => handleShow()}
+        />
+
+        <AppButton
+          iconName="download"
+          style={{ alignSelf: "center", marginHorizontal: 15 }}
+          onPress={() => handleDownload()}
+        />
+      </>
+    );
+  };
+
   return (
-    <Swipeable renderLeftActions={leftSwipe}>
+    <Swipeable renderLeftActions={leftSwipe} renderRightActions={rightSwipe}>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={{ flexDirection: "row" }}>
@@ -76,6 +128,7 @@ function EachItem({ data, deleteItem, uid, getAllItems }) {
           <View style={styles.titleContainer}>
             <Text style={styles.titleStyle}>{data.title}</Text>
           </View>
+
           <EditItemModal
             visible={modalVisible}
             data={data}
