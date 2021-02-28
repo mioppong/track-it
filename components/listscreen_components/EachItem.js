@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Image,
+  Alert,
   TouchableWithoutFeedback,
 } from "react-native";
 import { Dimensions } from "react-native";
@@ -15,11 +16,6 @@ import colors from "../../config/colors";
 import { deleteItem, getAllItems } from "../../reducers/reduxFunctions";
 import AppButton from "../AppButton";
 import EditItemModal from "./EditItemModal";
-import * as MediaLibrary from "expo-media-library";
-import * as FileSystem from "expo-file-system";
-import { useRef } from "react";
-import Toast from "react-native-toast-message";
-import Icon from "../Icon";
 
 function EachItem({
   data,
@@ -36,6 +32,25 @@ function EachItem({
   const handleDelete = () => {
     deleteItem({ uid, key: data.key, data });
     getAllItems({ uid });
+  };
+
+  const openTwoButtonAlert = () => {
+    Alert.alert(
+      "Are you sure you want to delete this!",
+      "It will be gone forever",
+
+      [
+        { text: "Yes", onPress: () => handleDelete() },
+        {
+          text: "No",
+          onPress: () => console.log("No button clicked"),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
   };
 
   const handleDownload = () => {
@@ -61,7 +76,7 @@ function EachItem({
       <AppButton
         iconName="delete"
         style={{ alignSelf: "center", marginHorizontal: 15 }}
-        onPress={() => handleDelete()}
+        onPress={() => openTwoButtonAlert()}
       />
     );
   };
