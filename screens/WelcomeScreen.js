@@ -78,7 +78,7 @@ class WelcomeScreen extends Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId: apiKeys.expoClientAndroidGoogleSignIn,
+        androidClientId: apiKeys.androidGoogle,
 
         iosClientId: apiKeys.expoClientIosGoogleSignIn,
 
@@ -113,7 +113,7 @@ class WelcomeScreen extends Component {
         <View style={styles.bottomContainer}>
           <Text style={styles.secondText}> Sign in here </Text>
           <View style={{ alignSelf: "center" }}>
-            <Icon name="arrow-down" iconColor={colors.primary} size={75} />
+            <Icon name="arrow-down" iconColor={colors.darkGray} size={75} />
           </View>
 
           <AppButton
@@ -122,7 +122,7 @@ class WelcomeScreen extends Component {
             iconName="google"
             onPress={this.signInWithGoogleAsync}
           />
-          <Text style={styles.secondText}> To start tracking your items </Text>
+          <Text style={styles.secondText}> To start tracking your items! </Text>
           <Image
             source={{
               uri:
