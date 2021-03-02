@@ -78,7 +78,7 @@ class WelcomeScreen extends Component {
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId: apiKeys.androidGoogle,
+        androidClientId: apiKeys.expoClientAndroidGoogleSignIn,
 
         iosClientId: apiKeys.expoClientIosGoogleSignIn,
 
