@@ -113,7 +113,7 @@ class WelcomeScreen extends Component {
         <View style={styles.bottomContainer}>
           <Text style={styles.secondText}> Sign in here </Text>
           <View style={{ alignSelf: "center" }}>
-            <Icon name="arrow-down" iconColor={colors.darkGray} size={75} />
+            <Icon name="arrow-down" iconColor={colors.primary} size={75} />
           </View>
 
           <AppButton
