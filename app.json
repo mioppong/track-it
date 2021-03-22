@@ -2,7 +2,7 @@
     "expo": {
         "name": "track-it",
         "slug": "track-it",
-        "version": "8.0.0",
+        "version": "9.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {
@@ -16,7 +16,7 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "usesAppleSignIn": true,
-            "buildNumber": "8",
+            "buildNumber": "9",
             "supportsTablet": false,
             "bundleIdentifier": "com.oppongstudios.trackit",
             "infoPlist": {
@@ -30,7 +30,7 @@
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#FFFFFF"
             },
-            "versionCode": 8,
+            "versionCode": 9,
             "package": "com.oppongstudios.trackit"
         },
         "web": {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet, View, Image } from "react-native";
+import { Text, StyleSheet, View, Image, Platform } from "react-native";
 import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -50,6 +50,8 @@ class WelcomeScreen extends Component {
             googleUser.idToken,
             googleUser.accessToken
           );
+
+          firebase.auth.ApplePro;
           // Sign in with credential from the Google user.
           firebase
             .auth()
@@ -99,8 +101,43 @@ class WelcomeScreen extends Component {
       return { error: true };
     }
   };
+  onSignInApple = async (idToken) => {
+    const provider = new firebase.auth.OAuthProvider("apple.com");
+    const credential = provider.credential({
+      idToken: idToken,
+      // rawNonce: nonce, // nonce value from above
+    });
+
+    console.log("BEFORE FIREBASE");
+    await firebase
+      .auth()
+      .signInWithCredential(credential)
+      .then((user) => console.log("USER IS", user));
+    // console.log("AFTER FIREBASE LOGIN", idToken, nonce);
+  };
+
+  loginWithApple = async () => {
+    const csrf = Math.random().toString(36).substring(2, 15);
+    const nonce = Math.random().toString(36).substring(2, 10);
+    const hashedNonce = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      nonce
+    );
+    const appleCredential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+      ],
+      state: csrf,
+      nonce: hashedNonce,
+    }).catch((err) => console.log("error trying to sign in", err));
+    const { identityToken, email, state } = appleCredential;
+
+    this.onSignInApple(identityToken, nonce);
+  };
 
   render() {
+    const loginAvailable = AppleAuthentication.isAvailableAsync();
     return (
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
@@ -145,6 +182,7 @@ class WelcomeScreen extends Component {
                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                   ],
                 });
+                this.onSignInApple(credential.identityToken);
                 // signed in
               } catch (e) {
                 if (e.code === "ERR_CANCELED") {
