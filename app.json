@@ -1,42 +1,41 @@
 {
-  "expo": {
-    "name": "track-it",
-    "slug": "track-it",
-    "version": "7.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "buildNumber": "7",
-      "supportsTablet": false,
-      "bundleIdentifier": "com.oppongstudios.trackit",
-      "infoPlist": {
-        "NSCameraUsageDescription": "track it requires access to your camera to let you add pictures of your items to remember them ",
-        "NSPhotoLibraryUsageDescription": "track it needs to access your camera roll so that you can upload images. Your images will not be shared without your permission",
-        "NSPhotoLibraryAddUsageDescription": "track it needs to access your camera roll so that you can upload images. Your images will not be shared without your permission"
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "versionCode": 7,
-      "package": "com.oppongstudios.trackit"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "description": ""
-  }
+    "expo": {
+        "name": "track-it",
+        "slug": "track-it",
+        "version": "9.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#000000"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "usesAppleSignIn": true,
+            "buildNumber": "9",
+            "supportsTablet": false,
+            "bundleIdentifier": "com.oppongstudios.trackit",
+            "infoPlist": {
+                "NSCameraUsageDescription": "track it requires access to your camera to let you add pictures of your items to remember them ",
+                "NSPhotoLibraryUsageDescription": "track it needs to access your camera roll so that you can upload images. Your images will not be shared without your permission",
+                "NSPhotoLibraryAddUsageDescription": "track it needs to access your camera roll so that you can upload images. Your images will not be shared without your permission"
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#FFFFFF"
+            },
+            "versionCode": 9,
+            "package": "com.oppongstudios.trackit"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "description": ""
+    }
 }

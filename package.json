@@ -16,6 +16,7 @@
         "antd-mobile": "^2.3.4",
         "expo": "~40.0.0",
         "expo-ads-admob": "8.4",
+        "expo-apple-authentication": "~2.2.2",
         "expo-camera": "~9.1.0",
         "expo-constants": "^9.3.5",
         "expo-file-system": "^9.3.0",
