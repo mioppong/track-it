@@ -8,6 +8,7 @@ import * as Google from "expo-google-app-auth";
 import { apiKeys } from "../config2";
 import { connect } from "react-redux";
 import Icon from "../components/Icon";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 class WelcomeScreen extends Component {
   constructor(props) {
@@ -111,7 +112,7 @@ class WelcomeScreen extends Component {
         </View>
 
         <View style={styles.bottomContainer}>
-          <Text style={styles.secondText}> Sign in here </Text>
+          <Text style={styles.secondText}> Sign in here :)</Text>
           <View style={{ alignSelf: "center" }}>
             <Icon name="arrow-down" iconColor={colors.primary} size={75} />
           </View>
@@ -121,6 +122,38 @@ class WelcomeScreen extends Component {
             iconSize={60}
             iconName="google"
             onPress={this.signInWithGoogleAsync}
+          />
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={
+              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+            }
+            cornerRadius={5}
+            style={{
+              width: 200,
+              height: 44,
+              alignSelf: "center",
+              marginVertical: 15,
+            }}
+            onPress={async () => {
+              try {
+                const credential = await AppleAuthentication.signInAsync({
+                  requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                  ],
+                });
+                // signed in
+              } catch (e) {
+                if (e.code === "ERR_CANCELED") {
+                  // handle that the user canceled the sign-in flow
+                } else {
+                  // handle other errors
+                }
+              }
+            }}
           />
           <Text style={styles.secondText}> To start tracking your items! </Text>
           <Image
