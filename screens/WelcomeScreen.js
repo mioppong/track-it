@@ -160,48 +160,51 @@ class WelcomeScreen extends Component {
             iconName="google"
             onPress={this.signInWithGoogleAsync}
           />
-          <AppleAuthentication.AppleAuthenticationButton
-            buttonType={
-              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-            }
-            buttonStyle={
-              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
-            }
-            cornerRadius={5}
-            style={{
-              width: 200,
-              height: 44,
-              alignSelf: "center",
-              marginVertical: 15,
-            }}
-            onPress={async () => {
-              try {
-                const credential = await AppleAuthentication.signInAsync({
-                  requestedScopes: [
-                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                  ],
-                });
-                this.onSignInApple(credential.identityToken);
-                // signed in
-              } catch (e) {
-                if (e.code === "ERR_CANCELED") {
-                  // handle that the user canceled the sign-in flow
-                } else {
-                  // handle other errors
-                }
+          {Platform.OS == "ios" && (
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={
+                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
               }
-            }}
-          />
+              buttonStyle={
+                AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+              }
+              cornerRadius={5}
+              style={{
+                width: 200,
+                height: 44,
+                alignSelf: "center",
+                marginVertical: 15,
+              }}
+              onPress={async () => {
+                try {
+                  const credential = await AppleAuthentication.signInAsync({
+                    requestedScopes: [
+                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                    ],
+                  });
+                  this.onSignInApple(credential.identityToken);
+                  // signed in
+                } catch (e) {
+                  if (e.code === "ERR_CANCELED") {
+                    // handle that the user canceled the sign-in flow
+                  } else {
+                    // handle other errors
+                  }
+                }
+              }}
+            />
+          )}
           <Text style={styles.secondText}> To start tracking your items! </Text>
           <Image
             source={{
               uri:
                 "https://media.tenor.com/images/b826b25547995a6f76d0b491165a3915/tenor.gif",
             }}
+            resizeMode="contain"
             style={{
-              width: 150,
-              height: 220,
+              width: 120,
+              height: 200,
               alignSelf: "center",
               marginTop: "5%",
             }}
@@ -240,21 +243,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.eights,
   },
   mainText: {
-    alignSelf: "center",
     fontWeight: "bold",
     fontSize: 40,
     color: colors.darkGray,
   },
   secondText: {
-    marginTop: 20,
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 20,
   },
   topContainer: {
-    marginTop: "20%",
     width: "60%",
-    justifyContent: "center",
     alignItems: "center",
     height: 200,
 
