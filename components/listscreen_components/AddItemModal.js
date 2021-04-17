@@ -207,20 +207,29 @@ const styles = StyleSheet.create({
     marginVertical: 2,
   },
   container: {
-    backgroundColor: colors.seventh,
-
+    backgroundColor: "#1a1a1a",
     flex: 1,
     justifyContent: "center",
   },
   descriptionInput: {
+    color: colors.fifth,
     padding: "5%",
-    backgroundColor: colors.fifth,
+    backgroundColor: "#1c1c1c",
     fontSize: 15,
     fontWeight: "bold",
     height: 200,
     width: "90%",
     borderRadius: 25,
     alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   image: {
     width: "100%",
@@ -242,10 +251,20 @@ const styles = StyleSheet.create({
     padding: "1%",
     fontSize: 15,
     fontWeight: "bold",
-    backgroundColor: colors.fifth,
     height: 50,
     width: "90%",
     borderRadius: 15,
+    backgroundColor: "#1a1a1a",
+    color: colors.fifth,
     alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 });

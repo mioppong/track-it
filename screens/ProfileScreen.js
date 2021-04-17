@@ -119,7 +119,7 @@ export default connect(mapStateToProps, null)(ProfileScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.eights,
+    backgroundColor: "#1a1a1a",
   },
   logo: {
     height: 40,
@@ -158,9 +158,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
     fontSize: 15,
+    color: colors.fifth,
   },
   text: {
     fontWeight: "bold",
     fontSize: 20,
+    color: colors.fifth,
   },
 });

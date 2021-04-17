@@ -329,13 +329,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
 
-    top: "80%",
+    top: "90%",
     left: "90%",
     position: "absolute",
   },
 
   container: {
-    backgroundColor: colors.eights,
+    backgroundColor: "#1a1a1a",
     flex: 1,
   },
   listStyles: {
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     margin: 10,
     paddingBottom: "10%",
     padding: "2%",
-    marginBottom: "18%",
+    // marginBottom: "18%",
 
     // backgroundColor: "gray",
   },

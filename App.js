@@ -3,13 +3,11 @@ import MainRoute from "./routes/MainRoute";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
-import { AsyncStorage } from "react-native";
 import createSecureStore from "redux-persist-expo-securestore";
 import { PersistGate } from "redux-persist/integration/react";
 import thunk from "redux-thunk";
-
 import rootReducer from "./reducers/rootReducer";
-import { logger, createLogger } from "redux-logger";
+import { createLogger } from "redux-logger";
 
 //secure storage / idk what that means really
 const storage = createSecureStore();

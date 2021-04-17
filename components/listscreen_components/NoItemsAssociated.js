@@ -7,7 +7,7 @@ export default function NoItemsAssociated(props) {
   return (
     <View style={styles.continer}>
       <Text style={styles.text}>No items associated with the words</Text>
-      <Icon name="arrow-down-bold" size={50} iconColor={colors.darkGray} />
+      <Icon name="arrow-down-bold" size={50} iconColor={colors.primary} />
       <Text style={styles.query}>{props.data} </Text>
       <Icon name="emoticon-sad" iconColor={colors.primary} size={100} />
     </View>
@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
+    color: colors.fifth,
     fontWeight: "bold",
     fontSize: 20,
   },
   query: {
     fontWeight: "bold",
     fontSize: 30,
-    color: colors.primary,
+    color: colors.fifth,
   },
 });

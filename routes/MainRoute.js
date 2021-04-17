@@ -6,8 +6,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoadingScreen from "../screens/LoadingScreen";
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
-
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import ListScreen from "../screens/ListScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -20,14 +18,16 @@ function MyTabs() {
   return (
     <Tab.Navigator
       appearence={{
-        floating: true,
+        // floating: true,
         whenActiveShow: "both",
         whenInactive: "icon-only",
         activeTintColor: colors.mediumGray,
         inactiveTintColor: colors.darkGray,
+        tabBarBackground: colors.darkGray,
       }}
       tabBarOptions={{
-        activeBackgroundColor: colors.seventh,
+        activeBackgroundColor: "#1c1c1c",
+        labelStyle: { color: colors.fifth, fontWeight: "bold" },
       }}
     >
       <Tab.Screen
@@ -35,7 +35,7 @@ function MyTabs() {
         component={ListScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icon name="format-list-bulleted" iconColor={colors.primary} />
+            <Icon name="format-list-bulleted" iconColor={colors.fifth} />
           ),
         }}
       />
@@ -45,7 +45,7 @@ function MyTabs() {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Icon name="face-profile" iconColor={colors.primary} />
+            <Icon name="face-profile" iconColor={colors.fifth} />
           ),
         }}
       />

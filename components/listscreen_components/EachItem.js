@@ -120,12 +120,11 @@ function EachItem({
               style={{
                 margin: "2%",
                 flex: 0.5,
-                backgroundColor: colors.fifth,
+                backgroundColor: "#1c1c1c",
                 height: 201,
                 width: "35%",
                 padding: "5%",
                 borderRadius: 20,
-
                 shadowColor: "#000",
                 shadowOffset: {
                   width: 0,
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
   container: {
     padding: "0.5%",
     width: "100%",
-    backgroundColor: colors.seventh,
+    backgroundColor: "#1a1a1a",
     marginVertical: "5%",
     borderRadius: 25,
     shadowColor: "#000",
@@ -189,15 +188,16 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
-    elevation: 4,
+    elevation: 5,
   },
   descriptionStyle: {
     padding: "1%",
     margin: "1%",
     fontWeight: "bold",
+    color: colors.fifth,
 
     // backgroundColor: "green",
 
@@ -222,5 +222,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "left",
     fontWeight: "bold",
+    color: colors.fifth,
   },
 });

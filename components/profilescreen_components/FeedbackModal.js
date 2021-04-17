@@ -37,13 +37,13 @@ export default function FeedbackModal(props) {
 
   return (
     <Modal
-      style={{ backgroundColor: colors.eights }}
+      style={{ backgroundColor: "#1a1a1a" }}
       animationType="slide"
       presentationStyle="pageSheet"
       visible={props.visible}
     >
       <KeyboardAwareScrollView
-        style={{ flex: 1, backgroundColor: colors.eights }}
+        style={{ flex: 1, backgroundColor: "#1a1a1a" }}
         contentContainerStyle={{ justifyContent: "center" }}
       >
         <Text style={styles.mainText}> Thank you for your feedback</Text>
@@ -85,10 +85,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "space-evenly",
     flexDirection: "row",
+    backgroundColor: "#1a1a1a",
   },
   container: {
     flex: 1,
-    backgroundColor: colors.eights,
+    backgroundColor: "#1a1a1a",
   },
   description: {
     backgroundColor: colors.eights,
@@ -99,26 +100,44 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     height: 200,
     width: "90%",
-    borderWidth: 1,
-    borderColor: colors.primary,
+    backgroundColor: "#1c1c1c",
+    color: colors.fifth,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   mainText: {
     marginVertical: "10%",
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+    color: colors.primary,
   },
   topContainer: {
     backgroundColor: "blue",
   },
   subjectInput: {
     padding: 10,
-
     borderRadius: 20,
     alignSelf: "center",
     height: 50,
     width: "90%",
-    borderWidth: 1,
-    borderColor: colors.primary,
+    backgroundColor: "#1c1c1c",
+    color: colors.fifth,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });

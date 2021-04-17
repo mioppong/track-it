@@ -42,5 +42,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "bold",
     fontSize: 20,
+    color: colors.fifth,
   },
 });
