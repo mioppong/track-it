@@ -137,7 +137,6 @@ class WelcomeScreen extends Component {
   };
 
   render() {
-    const loginAvailable = AppleAuthentication.isAvailableAsync();
     return (
       <Screen style={styles.container}>
         <View style={styles.topContainer}>
@@ -166,7 +165,7 @@ class WelcomeScreen extends Component {
                 AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
               }
               buttonStyle={
-                AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
               }
               cornerRadius={5}
               style={{
@@ -240,17 +239,18 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.eights,
+    backgroundColor: "#1a1a1a",
   },
   mainText: {
     fontWeight: "bold",
     fontSize: 40,
-    color: colors.darkGray,
+    color: colors.primary,
   },
   secondText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 20,
+    color: colors.fifth,
   },
   topContainer: {
     width: "60%",

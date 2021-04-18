@@ -50,7 +50,7 @@ class LoadingScreen extends Component {
           justifyContent: "center",
           alignItems: "center",
           flex: 1,
-          backgroundColor: colors.eights,
+          backgroundColor: "#1a1a1a",
         }}
       >
         <Plane color={colors.primary} size={48} />
